@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<!-- TABELA COM OS REGISTROS DE DIAS DA SEMANA CADASTRADOS -->
+       			<h:form id="formTableListaDiaSemana">
+					<p:dataTable id="dataTableListaDiaSemana" var="diaSemana" 
+					             value="#{diasemanaMB.listaDiaSemana}" paginator="true" rows="10">s
+				       		<f:facet name="header">
+				           		Lista de Frequências para as Atividades Físicas cadastradas (dia de realização das atividades)
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{diaSemana.codigodiasemana}" />
+				       		</p:column>
+				               <p:column style="text-align:center">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Segunda" />
+				           		</f:facet>
+				           		<h:outputText value="#{diaSemana.segunda == true? 'SIM':'-'}" />
+				       		</p:column>
+				            <p:column style="text-align:center">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Terça" />
+				           		</f:facet>
+				           		<h:outputText value="#{diaSemana.terca == true? 'SIM':'-'}" />
+				       		</p:column>
+							<p:column style="text-align:center">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Quarta" />
+				           		</f:facet>
+				           		<h:outputText value="#{diaSemana.quarta == true? 'SIM':'-'}" />
+				       		</p:column>
+				            <p:column style="text-align:center">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Quinta" />
+				           		</f:facet>
+				           		<h:outputText value="#{diaSemana.quinta == true? 'SIM':'-'}"/>
+				       		</p:column>
+				       		<p:column  style="text-align:center">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Sexta" />
+				           		</f:facet>
+				           		<h:outputText value="#{diaSemana.sexta == true? 'SIM':'-'}"/>
+				       		</p:column>
+				       		<p:column style="text-align:center">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Sábado" />
+				           		</f:facet>
+				           		<h:outputText value="#{diaSemana.sabado == true? 'SIM':'-'}"/>
+				       		</p:column>
+				            <p:column style="text-align:center">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Domingo" />
+				           		</f:facet>
+				           		<h:outputText value="#{diaSemana.domingo == true? 'SIM':'-'}"/>
+				       		</p:column>
+					        <p:column headerText="Ações" style="width:170px;" >
+					        	<p:commandButton title="Visualizar" value="Visualizar" update=":formListaDiaSemana:displayView" image="ui-icon ui-icon-search" oncomplete="dialogDiaSemana.show()">
+				       				<f:setPropertyActionListener target="#{diasemanaMB.diaSemanaSelecinado}" value="#{diaSemana}" />
+				       				<f:setPropertyActionListener value="#{false}" target="#{diasemanaMB.ativo}" />
+					       		</p:commandButton>
+					       		<p:commandButton title="Deletar" value="Deletar" image="ui-icon ui-icon-close" oncomplete="confirmacaoDialog.show()">
+					       				<f:setPropertyActionListener target="#{diasemanaMB.diaSemanaSelecinado}" value="#{diaSemana}" />
+					       				<f:setPropertyActionListener value="#{false}" target="#{diasemanaMB.ativo}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>	
+       			</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formListaDiaSemana">
+    		 <!-- DIALOG PARA VISUALIZAÇÃO DE DETALHES DE UM DETERMINADO REGISTRO DE DIAS DA SEMANA SELECIONADO PELO USUÁRIO -->
+    		 <p:dialog header="Detalhes da Frequência da Atividade Fisica" widgetVar="dialogDiaSemana" resizable="false"
+					   width="800" showEffect="explode" hideEffect="explode" modal="true">
+				<p:panel style="width:150px; height: 150px;border:none;margin-left: auto; margin-right: auto;">
+				 	<p:graphicImage url="/images/semana-icon.png"/>
+				</p:panel>
+				<p:panel header="Dados da Frequência de Atividade Física (dias em que as atividades serão realizadas)" style="border:none;"/>
+				<h:panelGrid id="displayView" style="border:none;margin-left: auto; margin-right: auto;">
+					<h:panelGrid columns="7">
+						<p:panel header="Segunda-feira">
+							<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+								<h:outputText value="#{diasemanaMB.diaSemanaSelecinado.segunda == true? 'SIM':'-'}" style="color:blue;"/>
+							</h:panelGrid>                         
+						</p:panel>
+						<p:panel header="Terça-feira">
+							<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+								<h:outputText value="#{diasemanaMB.diaSemanaSelecinado.terca == true? 'SIM':'-'}" style="color:blue;"/>
+							</h:panelGrid>
+						</p:panel>
+						<p:panel header="Quarta-feira">
+							<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+								<h:outputText value="#{diasemanaMB.diaSemanaSelecinado.quarta == true? 'SIM':'-'}" style="color:blue;"/>
+							</h:panelGrid>
+						</p:panel>
+						<p:panel header="Quinta-feira">
+							<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+								<h:outputText value="#{diasemanaMB.diaSemanaSelecinado.quinta == true? 'SIM':'-'}" style="color:blue;"/>
+							</h:panelGrid>
+						</p:panel>
+						<p:panel header="Sexta-feira">
+							<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+								<h:outputText value="#{diasemanaMB.diaSemanaSelecinado.sexta == true? 'SIM':'-'}" style="color:blue;"/>
+							</h:panelGrid>
+						</p:panel>
+						<p:panel header="Sábado">
+							<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+								<h:outputText value="#{diasemanaMB.diaSemanaSelecinado.sabado == true? 'SIM':'-'}" style="color:blue;"/>
+							</h:panelGrid>
+						</p:panel>
+						<p:panel header="Domingo">
+							<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+								<h:outputText value="#{diasemanaMB.diaSemanaSelecinado.domingo == true? 'SIM':'-'}" style="color:blue;"/>
+							</h:panelGrid>
+						</p:panel>
+					</h:panelGrid>
+				</h:panelGrid>
+			</p:dialog>
+			<!-- DIALOG CONFIRMAÇÃO DA DELEÇÃO -->
+			<p:confirmDialog message="Deseja realmente deletar o registro selecionado?" width="200"
+                  				  showEffect="explode" hideEffect="explode"
+                  				  header="Confirmação de Deleção" severity="alert" widgetVar="confirmacaoDialog" modal="true">
+			    	<p:commandButton value="Deletar" image="ui-icon ui-icon-check" 
+			    	                 update=":formTableListaDiaSemana:dataTableListaDiaSemana" 
+			    					 actionListener="#{diasemanaMB.deletar}" 
+    		                         oncomplete="confirmacaoDialog.hide()"/>
+		        	<p:commandButton value="Cancelar" image="ui-icon ui-icon-close" onclick="confirmacaoDialog.hide()" type="button" />
+	    	</p:confirmDialog>
+    	</h:form>
+	</h:body>
+</html>

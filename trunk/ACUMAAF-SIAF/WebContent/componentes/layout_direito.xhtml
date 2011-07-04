@@ -1,0 +1,24 @@
+<p:panel style="border:none;"
+			xmlns="http://www.w3.org/1999/xhtml"
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:p="http://primefaces.prime.com.tr/ui">
+		<p:panel header="UBF Botafogo" footer="Grupo de Atividade Física" style="border:none;width:215px">
+			<p:imageSwitch effect="turnDown" slideshowSpeed="5000">  
+			   <ui:repeat value="#{homeMB.imagesTop}" var="imageTop">  
+			       <p:graphicImage value="/images/#{imageTop}" width="195"/>  
+			   </ui:repeat>  
+			</p:imageSwitch>
+<!-- 			<p:graphicImage url="/images/layout-central-atividade-fisica9.jpg" width="195"/> -->
+		</p:panel>	
+		<p:panel header="USF Água Vermelha" footer="Grupo de Atividade Física" style="border:none;">
+<!-- 			<p:imageSwitch effect="zoom" slideshowSpeed="5000">   -->
+<!-- 			   <ui:repeat value="#{homeMB.imagesBottom}" var="imageBottom">   -->
+<!-- 			       <p:graphicImage value="/images/#{imageBottom}" width="195"/>   -->
+<!-- 			   </ui:repeat>   -->
+<!-- 			</p:imageSwitch> -->
+			<p:graphicImage url="/images/layout-central-atividade-fisica10.jpg" width="195"/>
+		</p:panel>
+</p:panel>
+	

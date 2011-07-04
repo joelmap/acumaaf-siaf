@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<!-- TABELA COM OS REGISTROS DE UNIDADE DE SAÚDE CADASTRADOS -->
+       			<h:form id="formTableListaUnidadesSaude">
+					<p:dataTable id="dataTableListaUnidadesSaude" var="unidadeSaude" 
+					             value="#{unidadesaudeMB.listaUnidadeSaude}" paginator="true" rows="10">
+					        <f:facet name="header">
+				           		Lista de Registros de Unidades de Saúde
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{unidadeSaude.codigounidadesaude}" />
+				       		</p:column>
+				       		<p:column sortBy="#{unidadeSaude.nome}" filterBy="#{unidadeSaude.nome}" style="width:100px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome" />
+				           		</f:facet>
+				           		<h:outputText value="#{unidadeSaude.nome}" />
+				       		</p:column>
+				            <p:column style="width:20px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Telefone" />
+				           		</f:facet>
+				           		<h:outputText value="#{unidadeSaude.telefone}" />
+				           	</p:column>
+					        <p:column headerText="Ações" style="width:30px;text-align:center;" >
+					        	<p:commandButton title="Visualizar" update=":formListaUnidadeSaude:displayView" image="ui-icon ui-icon-search" 
+					        	                 oncomplete="dialogUnidadeSaude.show()">
+				       				<f:setPropertyActionListener target="#{unidadesaudeMB.unidadeSaudeSelecionada}" value="#{unidadeSaude}" />
+				       				<f:setPropertyActionListener value="#{false}" target="#{unidadesaudeMB.ativo}" />
+					       		</p:commandButton>
+					       		<p:commandButton title="Editar" update=":formListaUnidadeSaude:panelGridDialogEditarUnidadeSaude" 
+					       						 image="ui-icon ui-icon-pencil" oncomplete="dialogUnidadeSaudeEdit.show()">
+				       				<f:setPropertyActionListener target="#{unidadesaudeMB.unidadeSaudeSelecionada}" value="#{unidadeSaude}" />
+				       				<f:setPropertyActionListener value="#{true}" target="#{unidadesaudeMB.ativo}" />
+					       		</p:commandButton>
+					       		<p:commandButton title="Deletar" update=":formListaUnidadeSaude:panelGridDialogEditarUnidadeSaude" 
+					       						 image="ui-icon ui-icon-close" oncomplete="confirmacaoDialog.show()">
+					       				<f:setPropertyActionListener target="#{unidadesaudeMB.unidadeSaudeSelecionada}" value="#{unidadeSaude}" />
+					       				<f:setPropertyActionListener value="#{false}" target="#{unidadesaudeMB.ativo}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>	
+       			</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formListaUnidadeSaude">
+    		 <!-- DIALOG PARA VISUALIZAÇÃO DE DETALHES DE UM DETERMINADO REGISTRO DE UNIDADE DE SAÚDE SELECIONADO PELO USUÁRIO -->
+    		 <p:dialog header="Detalhes do registro da Unidade de Saúde" widgetVar="dialogUnidadeSaude" resizable="false"
+					   width="400" showEffect="explode" hideEffect="explode" modal="true">
+				<h:panelGrid id="displayView" cellpadding="4" style="margin-left: auto; margin-right: auto;">
+					<p:panel style="width:150px; height: 150px;border:none;margin-left: auto; margin-right: auto;">
+					 	<p:graphicImage url="/images/unidadesaude-icon.png"/>
+					</p:panel>
+					<p:panel header="Dados da Unidade de Saúde">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="Nome: " style="text-weight:bold;" />
+								<h:outputText value="#{unidadesaudeMB.unidadeSaudeSelecionada.nome}" style="color:blue;"/>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Detalhes do Endereço">
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Rua....:" style="text-weight:bold;"/>
+								<h:outputText value="#{unidadesaudeMB.unidadeSaudeSelecionada.enderecorua}" style="color:blue;"/>
+						</h:panelGrid>
+						<h:panelGrid columns="4" columnClasses="label, value">
+							<h:outputText value="Bairro.:" style="text-weight:bold;"/>
+								<h:outputText value="#{unidadesaudeMB.unidadeSaudeSelecionada.enderecobairro}" style="color:blue;"/>
+							<h:outputText value="Cidade:" style="text-weight:bold;"/>
+								<h:outputText value="#{unidadesaudeMB.unidadeSaudeSelecionada.enderecocidade}" style="color:blue;" />
+							<h:outputText value="Estado:" style="text-weight:bold;"/>
+								<h:outputText value="#{unidadesaudeMB.unidadeSaudeSelecionada.enderecouf}" style="color:blue;" />
+							<h:outputText value="CEP:" style="text-weight:bold;"/>
+								<h:outputText value="#{unidadesaudeMB.unidadeSaudeSelecionada.enderecocep}" style="color:blue;"/>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Informações de Contato">
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="E-mail:" style="text-weight:bold;"/>
+								<h:outputText value="#{unidadesaudeMB.unidadeSaudeSelecionada.email}" style="color:blue;"/>
+							<h:outputText value="Telefone de contato:" style="text-weight:bold;"/>	
+								<h:outputText value="#{unidadesaudeMB.unidadeSaudeSelecionada.telefone}" style="color:blue;"/>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Observações">
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Observação: " style="text-weight:bold;"/>
+								<h:outputText value="#{unidadesaudeMB.unidadeSaudeSelecionada.observacao}" style="color:blue;"/>	
+						</h:panelGrid>
+					</p:panel>		        	
+	            </h:panelGrid>
+			</p:dialog>
+			<!-- DIALOG PARA FORMULÁRIO DE EDIÇÃO DE UM DETERMINADO REGISTRO DE UNIDADE DE SAÚDE SELECIONADO PELO USUÁRIO -->
+			<p:dialog header="Edição de registro da Unidade de Saúde" widgetVar="dialogUnidadeSaudeEdit" resizable="false"
+			          width="500" showEffect="explode" hideEffect="explode" id="idDialogUnidadeSaudeEdit" closable="false" 
+			          modal="true" >
+			    <h:panelGrid id="panelGridDialogEditarUnidadeSaude">
+			    	<p:growl autoUpdate="true" id="growl" sticky="true"/>
+					<p:messages id="msgeditar" autoUpdate="true"/>
+					<p:panel header="Dados da Unidade de Saúde">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="Nome: *" />
+								<p:inputText maxlength="50" value="#{unidadesaudeMB.unidadeSaudeSelecionada.nome}" required="true" requiredMessage="[Nome] O campo NOME deverá ser preenchido" style="width:200px"/>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Detalhes do Endereço">
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Rua....:" />
+								<p:inputText maxlength="50" value="#{unidadesaudeMB.unidadeSaudeSelecionada.enderecorua}" style="width:330px"/>
+						</h:panelGrid>
+						<h:panelGrid columns="4" columnClasses="label, value">
+							<h:outputText value="Bairro.:" />
+								<p:inputText maxlength="50" value="#{unidadesaudeMB.unidadeSaudeSelecionada.enderecobairro}" style="width:141px"/>
+							<h:outputText value="Cidade:" />
+								<p:inputText maxlength="50" value="#{unidadesaudeMB.unidadeSaudeSelecionada.enderecocidade}"/>
+							<h:outputText value="Estado:" />
+								<h:selectOneMenu value="#{unidadesaudeMB.unidadeSaudeSelecionada.enderecouf}" effect="drop" style="width:150px" height="200">
+									<f:selectItem itemLabel="Acre" itemValue="AC"/>
+									<f:selectItem itemLabel="Alagoas" itemValue="AL"/>
+									<f:selectItem itemLabel="Amapá" itemValue="AP"/>
+									<f:selectItem itemLabel="Amazonas" itemValue="AM"/>
+									<f:selectItem itemLabel="Bahia" itemValue="BA"/>
+									<f:selectItem itemLabel="Ceará" itemValue="CE"/>
+									<f:selectItem itemLabel="Distrito Federal" itemValue="DF"/>
+									<f:selectItem itemLabel="Espirito Santo" itemValue="ES"/>
+									<f:selectItem itemLabel="Goiás" itemValue="GO"/>
+									<f:selectItem itemLabel="Maranhão" itemValue="MA"/>
+									<f:selectItem itemLabel="Mato Grosso" itemValue="MT"/>
+									<f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS"/>
+									<f:selectItem itemLabel="Minas Gerais" itemValue="MG"/>
+									<f:selectItem itemLabel="Pará" itemValue="PA"/>
+									<f:selectItem itemLabel="Paraíba" itemValue="PB"/>
+									<f:selectItem itemLabel="Paraná" itemValue="PR"/>
+									<f:selectItem itemLabel="Pernambuco" itemValue="PE"/>
+									<f:selectItem itemLabel="Piauí" itemValue="PI"/>
+									<f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ"/>
+									<f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN"/>
+									<f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS"/>
+									<f:selectItem itemLabel="Rondônia" itemValue="RO"/>
+									<f:selectItem itemLabel="Roraima" itemValue="RR"/>
+									<f:selectItem itemLabel="Santa Catarina" itemValue="SC"/>
+									<f:selectItem itemLabel="São Paulo" itemValue="SP"/>
+									<f:selectItem itemLabel="Sergipe" itemValue="SE"/>
+									<f:selectItem itemLabel="Tocantins" itemValue="TO"/>
+								</h:selectOneMenu>
+							<h:outputText value="CEP:" />
+								<p:inputMask value="#{unidadesaudeMB.unidadeSaudeSelecionada.enderecocep}" mask="99.999-999"/>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Informações de Contato">
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="E-mail:" />
+								<p:inputText maxlength="60" value="#{unidadesaudeMB.unidadeSaudeSelecionada.email}" style="width:180px"/>
+							<h:outputText value="Telefone de contato:" />	
+								<p:inputMask value="#{unidadesaudeMB.unidadeSaudeSelecionada.telefone}" mask="(99) 9999-9999"/>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Observações">
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Observação: " />
+								<p:inputTextarea maxlength="300" value="#{unidadesaudeMB.unidadeSaudeSelecionada.observacao}" style="width:300px; height: 60px;" effectDuration="400"/>	
+						</h:panelGrid>
+					</p:panel>
+					<h:panelGrid>
+						<h:outputText value="* Campos Obrigatórios!"/>
+						<p:commandButton id="commandButtonEditar" value="Editar" action="#{unidadesaudeMB.editar}" 
+						                 update=":formTableListaUnidadesSaude:dataTableListaUnidadesSaude,msgeditar,growl" 
+						                 image="ui-icon ui-icon-pencil" oncomplete="handleEditRequest(xhr, status, args)"/>
+					</h:panelGrid>
+			    </h:panelGrid>      
+			</p:dialog>
+			<!-- DIALOG CONFIRMAÇÃO DA DELEÇÃO -->
+			<p:confirmDialog message="Deseja realmente deletar o registro selecionado?" width="200"
+                  				  showEffect="explode" hideEffect="explode"
+                  				  header="Confirmação de Deleção" severity="alert" widgetVar="confirmacaoDialog" modal="true">
+			    	<p:commandButton value="Deletar" image="ui-icon ui-icon-check" 
+			    	                 update=":formTableListaUnidadesSaude:dataTableListaUnidadesSaude" 
+			    					 actionListener="#{unidadesaudeMB.deletar}" 
+    		                         oncomplete="confirmacaoDialog.hide()"/>
+		        	<p:commandButton value="Cancelar" image="ui-icon ui-icon-close" onclick="confirmacaoDialog.hide()" type="button" />   	
+	    	</p:confirmDialog>
+    	</h:form>
+    	<!-- SCRIPT PARA VERIFICAR SE O USUÁRIO PREENCHEU TODOS OS CAMPOS OBRIGATÓRIOS DA PÁGINA -->
+    	<script type="text/javascript">  
+		    function handleEditRequest(xhr, status, args) {  
+		        if(args.validationFailed) {  
+		            jQuery('#idDialogUnidadeSaudeEdit').parent().effect("shake", { times:3 }, 100);  
+		        } else {  
+		        	dialogUnidadeSaudeEdit.hide();    
+		        }  
+            }  
+        </script>
+	</h:body>
+</html>

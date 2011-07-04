@@ -1,0 +1,18 @@
+<p:dock position="top" itemWidth="60" proximity="30"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	
+	<p:menuitem value="Home" icon="/images/home-icon.png" url="/home.xhtml" />
+	<p:menuitem value="Gerenciar Usuários" icon="/images/user-icon.png" url="/usuario/gerenciaUsuarios.xhtml"/>
+	<p:menuitem value="Gerenciar Unidade de Saúde" icon="/images/unidadesaude-icon.png" url="/unidadesaude/gerenciaUnidadeSaude.xhtml" action="/unidadesaude/gerenciaUnidadeSaude.xhtml?faces-redirect=true" ajax="false"/>
+	<p:menuitem value="Gerenciar Atividade Física" icon="/images/atividadefisica-icon.png" url="/atividadefisica/gerenciaAtividadeFisica.xhtml" action="/atividadefisica/gerenciaAtividadeFisica.xhtml?faces-redirect=true" ajax="false"/>
+	<p:menuitem value="Gerenciar Grupo de Atividade Física" icon="/images/user-group-icon.png" url="/grupoatividadefisica/gerenciaGrupoAtividadeFisica.xhtml" action="#{loginusuarioMB.logout}" ajax="false"/>
+	<p:menuitem value="Gráficos e Relatórios" icon="/images/chart-icon.png" url="/relatorio/gerenciaRelatorios.xhtml" ajax="false"/>
+	<p:menuitem value="Mensagens" icon="/images/msn-icon.png" url="/msn/gerenciaMsn.xhtml" ajax="false" />
+	<p:menuitem value="Configurações" icon="/images/configuracao-icon.png" url="/configuracao/gerenciaConfiguracao.xhtml" action="#{loginusuarioMB.logout}" ajax="false"/>
+	<p:menuitem value="Sair do SIAF" icon="/images/logout-icon.png" url="/login/login.xhtml" action="#{loginusuarioMB.logout}" ajax="false"/>
+	
+</p:dock>

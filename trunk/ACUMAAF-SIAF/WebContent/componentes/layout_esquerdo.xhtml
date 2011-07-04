@@ -1,0 +1,45 @@
+<p:accordionPanel activeIndex="0" autoHeight="false" 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+	<p:tab title="Calendário">
+		<br />
+		<p:calendar mode="inline" navigator="none" />
+		<br />
+		<p:panel header="Usuário Logado">
+			<h:outputText value="#{loginusuarioMB.usuario.nome}" style="color:blue;"/>
+		</p:panel>
+	</p:tab>
+	<p:tab title="Programação do mês">
+		<p:graphicImage url="/images/tasks-icon.png"/><p:spacer width="10" height="0" /><h:outputText value="04/06/2011 - Grupo de passeio." /><br/>
+		<p:graphicImage url="/images/tasks-icon.png"/><p:spacer width="10" height="30" /><h:outputText value="08/06/2011 - Ginástica." style="color:blue;"/><br/>
+		<p:graphicImage url="/images/tasks-icon.png"/><p:spacer width="10" height="30" /><h:outputText value="10/06/2011 - Natação." /><br/>
+		<p:graphicImage url="/images/tasks-icon.png"/><p:spacer width="10" height="30" /><h:outputText value="15/06/2011 - Corrida." style="color:blue;"/><br/>
+		<p:graphicImage url="/images/tasks-icon.png"/><p:spacer width="10" height="30" /><h:outputText value="18/06/2011 - Recreação." /><br/>
+		<p:graphicImage url="/images/tasks-icon.png"/><p:spacer width="10" height="30" /><h:outputText value="20/06/2011 - Passeio na trilha." style="color:blue;"/><br/>
+		<p:graphicImage url="/images/tasks-icon.png"/><p:spacer width="10" height="30" /><h:outputText value="24/06/2011 - Grupo de passeio." /><br/>
+		<p:graphicImage url="/images/tasks-icon.png"/><p:spacer width="10" height="30" /><h:outputText value="26/06/2011 - Caminhada na pista." style="color:blue;"/><br/>
+		<p:graphicImage url="/images/tasks-icon.png"/><p:spacer width="10" height="30" /><h:outputText value="30/06/2011 - Passeio ecológico." /><br/>
+	</p:tab>
+	<p:tab title="Últimas notícias" >
+		<p:fieldset >  
+		    <h:panelGrid columns="1" cellpadding="3">  
+		        <p:graphicImage url="/images/news-icon.png"/>  
+		        <h:outputText  
+		            value="01/06/2011 - O grupo de caminhada da comunidade Água Vermelha completa hoje
+		  				   30 dias consecutivos de atividades. Parabéns a todos os envolvidos com o projeto!" />  
+		    </h:panelGrid>  
+		</p:fieldset> 
+		<p:fieldset style="border:none;">  
+		    <h:panelGrid columns="2" cellpadding="3">  
+		        <p:graphicImage url="/images/news-icon.png"/>  
+		        <h:outputText  
+		            value="04/06/2011 - Olá pessoal da comunidade do Botafogo. O grupo de passeio
+			                     das quartas-feiras fez tanto sucesso que será aberto incrições para a criação
+			                     de novas turmas para as sextas-feiras. Fiquem atentos aos prazos!" />  
+		    </h:panelGrid>  
+		</p:fieldset>
+	</p:tab>
+</p:accordionPanel>

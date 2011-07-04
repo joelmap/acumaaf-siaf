@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<!-- TABELA COM OS REGISTROS DE VINCULOS ENTRE USUÁRIOS RESPONSÁVEIS E GRUPOS DE ATIVIDADE FÍSICA -->
+       			<h:form id="formTableListaMatriculas">
+       				<p:dataTable id="dataTableListaMatriculas" var="matricula" 
+					             value="#{matriculausuariogrupoatividadefisicaMB.listaMatriculaUsuarioGrupoAtividadeFisica}" paginator="true" rows="10">
+				       		<f:facet name="header">
+				           		Lista de Registros das matrículas dos Participantes nos Grupos de Atividade Física
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{matricula.codigomatriculausuariogrupoatividadefisica}" />
+				       		</p:column>
+				       		<p:column sortBy="#{matricula.usuario.nome}" filterBy="#{matricula.usuario.nome}" >
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome do Participante" />
+				           		</f:facet>
+				           		<h:outputText value="#{matricula.usuario.nome}" />
+				       		</p:column>
+				            <p:column sortBy="#{matricula.grupoatividadefisica.nome}" filterBy="#{matricula.grupoatividadefisica.nome}" style="text-align:center;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome do Grupo de Atividade Física" />
+				           		</f:facet>
+				           		<h:outputText value="#{matricula.grupoatividadefisica.nome}" />
+				       		</p:column>
+				       		<p:column headerText="Ação" style="text-align:center;" >
+					        	<p:commandButton title="Deletar" value="Deletar" 
+					        	                 image="ui-icon ui-icon-close" oncomplete="confirmacaoDialog.show()">
+					       				<f:setPropertyActionListener target="#{matriculausuariogrupoatividadefisicaMB.matriculaUsuarioGrupoAtividadeFisicaSelecionada}" value="#{matricula}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+				</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formDialogListaMatriculaUsuarioGrupoAtividadeFisica">
+			<!-- DIALOG CONFIRMAÇÃO DA DELEÇÃO -->
+			<p:confirmDialog message="Deseja realmente deletar o registro selecionado?" width="200"
+                  				  showEffect="explode" hideEffect="explode"
+                  				  header="Confirmação de Deleção" severity="alert" widgetVar="confirmacaoDialog" modal="true">
+			    	<p:commandButton value="Deletar" image="ui-icon ui-icon-check" 
+			    	                 update=":formTableListaMatriculas:dataTableListaMatriculas" 
+			    					 actionListener="#{matriculausuariogrupoatividadefisicaMB.deletar}" 
+    		                         oncomplete="confirmacaoDialog.hide()"/>
+		        	<p:commandButton value="Cancelar" image="ui-icon ui-icon-close" onclick="confirmacaoDialog.hide()" type="button" />
+	    	</p:confirmDialog>
+    	</h:form>
+	</h:body>
+</html>

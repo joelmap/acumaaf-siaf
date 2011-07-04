@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<h:form id="formDadoCriticoSessaoAtividadeFisica">
+       				<p:growl autoUpdate="true" id="growl" sticky="true"/>
+ 					<p:messages id="msgDadoSessaoAtividadeFisica" autoUpdate="true"/>
+					<p:panel header="Selecione um Dado da Sessão de Atividade Física">
+						<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="Dado da Sessão:"/>
+							<p:inputText id="dadoSessaoAtividadeFisica" name="dadoSessaoAtividadeFisica" value="#{dadocriticosessaoMB.dadoSessao.codigodadosessao}" 
+							             required="true" requiredMessage="[Código Dado Sessão] É necessário escolher um Dado da Sessão de Atividade Física!" 
+							             onkeypress="return false;" />
+							<h:outputLink value="javascript:void(0)" onclick="dialogDadoSessao.show()" title="Seleção de Dado da Sessão de Atividade Física">     
+							    <p:graphicImage value="/images/dado-sessao-mini-icon.png" />  
+							</h:outputLink>		
+						</h:panelGrid>
+					</p:panel>
+					<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid" style="border:none;">
+						<h:outputText value="* Campos Obrigatórios!"/> <br/><br/>
+						<p:commandButton action="#{dadocriticosessaoMB.cadastrarDadoCriticoSessaoAtividadeFisica}"  image="ui-icon ui-icon-pencil" 
+						                 value="Cadastrar dados" update="msgDadoSessaoAtividadeFisica,growl" ajax="false"/>
+					</h:panelGrid>
+				</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formDialogDadoSessaoAtividadeFisica">
+    		<!-- DIALOG PARA SELEÇÃO DE DADOS DA SESSÃO -->
+    		<p:dialog header="Seleção de Dados da Sessão de Atividade Física" widgetVar="dialogDadoSessao" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogDadoSessao" closable="true" modal="true">
+				<p:dataTable id="dataTableDadoSessao" var="dadoSessao" 
+					             value="#{dadocriticosessaoMB.listaDadoSessao}" paginator="true" rows="10">
+				       		<f:facet name="header">
+				           		Lista de Dados das Sessões de Atividade Física
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{dadoSessao.codigodadosessao}" />
+				       		</p:column>
+				               <p:column style="text-align:center;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Sessão de Atividade" />
+				           		</f:facet>
+				           		<h:outputText value="#{dadoSessao.sessao.data}">
+				           			<f:convertDateTime pattern="dd/MM/yyyy"/>
+				           		</h:outputText>
+				       		</p:column>
+			               <p:column>
+				       		    <f:facet name="header">
+				               		<h:outputText value="Valor" />
+				           		</f:facet>
+				           		<h:outputText value="#{dadoSessao.valor}"/>
+				       		</p:column>
+					        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+					        	<p:commandButton title="Selecionar" value="Selecionar" 
+					        	                 update=":formDadoCriticoSessaoAtividadeFisica:dadoSessaoAtividadeFisica" 
+					        	                 image="ui-icon ui-icon-search" oncomplete="dialogDadoSessao.hide()">
+				       				<f:setPropertyActionListener target="#{dadocriticosessaoMB.dadoSessao}" value="#{dadoSessao}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+			</p:dialog>
+    	</h:form>
+	</h:body>
+</html>

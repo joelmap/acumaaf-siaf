@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<h:form id="formDadoSessaoAtividadeFisica">
+       				<p:growl autoUpdate="true" id="growl" sticky="true"/>
+ 					<p:messages id="msgDadoSessaoAtividadeFisica" autoUpdate="true"/>
+					<p:panel header="Selecione uma Sessão de Atividade Física e um Participante">
+						<h:panelGrid columns="2" style="margin-left: auto; margin-right: auto;">
+							<p:panel header="Selecione uma Sessão de Atividade Física">
+								<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+									<h:outputText value="Sessão:"/>
+									<p:calendar id="sessaoAtividadeFisica" name="sessaoAtividadeFisica" value="#{dadosessaoMB.sessao.data}" 
+									             required="true" requiredMessage="[Data da Sessão] É necessário escolher uma Sessão de Atividade Física!" 
+									             style="width:200px;" onkeypress="return false;" pattern="dd/MM/yyyy"/>
+									<h:outputLink value="javascript:void(0)" onclick="dialogSessao.show()" title="Seleção de Sessão de Atividade Física">     
+									    <p:graphicImage value="/images/sessao-atividade-fisica-mini-icon.png" />  
+									</h:outputLink>		
+								</h:panelGrid>
+							</p:panel>
+							<p:panel header="Selecione um Participante da Atividade Física">
+									<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+										<h:outputText value="Participante:"/>
+											 <p:inputText id="participanteAtividadeFisica" name="participanteAtividadeFisica" value="#{dadosessaoMB.usuario.nome}" 
+										            required="true" requiredMessage="[Participante] É necessário escolher um Participante da Atividade Física!" 
+										            style="width:200px;" onkeypress="return false;" />
+										<h:outputLink value="javascript:void(0)" onclick="dialogParticipante.show()" title="Seleção de Participante da Atividade Física">     
+										    <p:graphicImage value="/images/participante-icon.png" />  
+									 	</h:outputLink>  	
+									</h:panelGrid>
+							</p:panel>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Selecione um Instrumento de Coleta">
+							<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Instrumento de Coleta:"/>
+								<p:inputText id="instrumentoColeta" name="instrumentoColeta" value="#{dadosessaoMB.instrumentoColeta.nome}" 
+								            required="true" requiredMessage="[Instrumento de Coleta] É necessário escolher um Instrumento de Coleta!" 
+								            style="width:200px;" onkeypress="return false;" />
+								<h:outputLink value="javascript:void(0)" onclick="dialogInstrumentoColeta.show()" title="Seleção de Instrumento de Coleta">     
+								    <p:graphicImage value="/images/instrumentocoleta-mini-icon.png" />  
+							 	</h:outputLink>	   	
+							</h:panelGrid>
+					</p:panel>
+					<p:panel header="Dado da Sessão">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Valor do dado...........: *" />
+									<p:inputText maxlength="20" value="#{dadosessaoMB.dadoSessao.valor}" required="true" 
+									requiredMessage="[Valor do dado] É necessário preencher o campo de Valor do dado"/>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Observações">
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Observação...............: " />
+								<p:inputTextarea maxlength="300" value="#{dadosessaoMB.dadoSessao.descricao}" style="width:300px; height: 50px;" effectDuration="400"/>	
+						</h:panelGrid>
+					</p:panel>
+					<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid" style="border:none;">
+						<h:outputText value="* Campos Obrigatórios!"/> <br/><br/>
+						<p:commandButton action="#{dadosessaoMB.cadastrarDadoSessaoAtividadeFisica}"  image="ui-icon ui-icon-pencil" 
+						                 value="Cadastrar dados" update="msgDadoSessaoAtividadeFisica,growl" ajax="false"/>
+					</h:panelGrid>
+				</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formDialogDadoSessaoAtividadeFisica">
+    		<!-- DIALOG PARA SELEÇÃO DE SESSÃO -->
+    		<p:dialog header="Seleção de Sessão de Atividade Física" widgetVar="dialogSessao" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogSessao" closable="true" modal="true">
+				<p:dataTable id="dataTableSessao" var="sessao" 
+					             value="#{dadosessaoMB.listaSessao}" paginator="true" rows="10">s
+				       		<f:facet name="header">
+				           		Lista de Sessões de Atividade Física
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{sessao.codigosessao}" />
+				       		</p:column>
+				               <p:column style="text-align:center;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Sessão de Atividade" />
+				           		</f:facet>
+				           		<h:outputText value="#{sessao.data}">
+				           			<f:convertDateTime pattern="dd/MM/yyyy"/>
+				           		</h:outputText>
+				       		</p:column>
+					        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+					        	<p:commandButton title="Selecionar" value="Selecionar" update=":formDadoSessaoAtividadeFisica:sessaoAtividadeFisica" 
+					        	                 image="ui-icon ui-icon-search" oncomplete="dialogSessao.hide()">
+				       				<f:setPropertyActionListener target="#{dadosessaoMB.sessao}" value="#{sessao}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+			</p:dialog>
+			<!-- DIALOG PARA SELEÇÃO DE PARTICIPANTE -->
+    		<p:dialog header="Seleção do Participante" widgetVar="dialogParticipante" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogParticipante" closable="true" modal="true">
+				<p:dataTable id="dataTableParticipante" var="participante" 
+					             value="#{dadosessaoMB.listaUsuarios}" paginator="true" rows="10">s
+				       		<f:facet name="header">
+				           		Lista de Participantes cadastrados
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{participante.codigousuario}" />
+				       		</p:column>
+				               <p:column sortBy="#{participante.nome}" filterBy="#{participante.nome}" style="width:100px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome" />
+				           		</f:facet>
+				           		<h:outputText value="#{participante.nome}" />
+				       		</p:column>
+					        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+					        	<p:commandButton title="Selecionar" value="Selecionar" update=":formDadoSessaoAtividadeFisica:participanteAtividadeFisica" 
+					        	                 image="ui-icon ui-icon-search" oncomplete="dialogParticipante.hide()">
+				       				<f:setPropertyActionListener target="#{dadosessaoMB.usuario}" value="#{participante}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+			</p:dialog>
+			<!-- DIALOG PARA SELEÇÃO DE INSTRUMENTO DE COLETA -->
+    		<p:dialog header="Seleção de Instrumento de Coleta" widgetVar="dialogInstrumentoColeta" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogInstrumentoColeta" closable="true" modal="true">
+				<p:dataTable id="dataTableIntrumentoColeta" var="instrumentoColeta" 
+					             value="#{dadosessaoMB.listaInstrumentoColeta}" paginator="true" rows="10">s
+				       		<f:facet name="header">
+				           		Lista de Participantes cadastrados
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{instrumentoColeta.codigoinstrumentocoleta}" />
+				       		</p:column>
+				               <p:column sortBy="#{instrumentoColeta.nome}" filterBy="#{instrumentoColeta.nome}" style="width:100px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome" />
+				           		</f:facet>
+				           		<h:outputText value="#{instrumentoColeta.nome}" />
+				       		</p:column>
+					        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+					        	<p:commandButton title="Selecionar" value="Selecionar" update=":formDadoSessaoAtividadeFisica:instrumentoColeta" 
+					        	                 image="ui-icon ui-icon-search" oncomplete="dialogInstrumentoColeta.hide()">
+				       				<f:setPropertyActionListener target="#{dadosessaoMB.instrumentoColeta}" value="#{instrumentoColeta}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+			</p:dialog>
+    	</h:form>
+	</h:body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Caixa de e-mail" resizable="false" width="250">
+       		<h:form>
+       			<p:menu style="width:230px;margin-left: auto; margin-right: auto;">  
+			        <p:submenu label="Enviar Mensagem">  
+			            <p:menuitem value="Criar Mensagem" update="centro" icon="ui-icon ui-icon-pencil">
+			            	<f:setPropertyActionListener target="#{msnMB.criarEmail}" value="#{true}" />
+			            	<f:setPropertyActionListener target="#{msnMB.mostrarLidas}" value="#{false}" />
+			              	<f:setPropertyActionListener target="#{msnMB.mostrarNovas}" value="#{false}" />
+			              	<f:setPropertyActionListener target="#{msnMB.usuario}" value="#{loginusuarioMB.usuario}" />
+			            </p:menuitem>  
+			        </p:submenu>
+			        <p:submenu label="Caixa de Entrada">  
+			            <p:menuitem value="Mensagens Novas" update="centro" icon="ui-icon ui-icon-arrowrefresh-1-w">
+			            	<f:setPropertyActionListener target="#{msnMB.criarEmail}" value="#{false}" />
+			            	<f:setPropertyActionListener target="#{msnMB.mostrarLidas}" value="#{false}" />
+			              	<f:setPropertyActionListener target="#{msnMB.mostrarNovas}" value="#{true}" />
+			              	<f:setPropertyActionListener target="#{msnMB.usuario}" value="#{loginusuarioMB.usuario}" />
+			            </p:menuitem>  
+			            <p:menuitem value="Mensagens Lidas" update="centro" icon="ui-icon ui-icon-disk">
+			              	<f:setPropertyActionListener target="#{msnMB.criarEmail}" value="#{false}" />
+			              	<f:setPropertyActionListener target="#{msnMB.mostrarLidas}" value="#{true}" />
+			              	<f:setPropertyActionListener target="#{msnMB.mostrarNovas}" value="#{false}" />          
+			            </p:menuitem>  
+			        </p:submenu>    
+			    </p:menu>
+       		</h:form>  
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<!-- MAILBOX CENTRAL DA PÁGINA -->
+       			<h:form id="formTableMensagens">
+       				<p:panel header="Compondo uma nova Mensagem" style="margin-left: auto;border:none;margin-right: auto;width:600px;" rendered="#{msnMB.criarEmail}">
+       					<h:panelGrid id="panelGridCriarMensagem">
+					    	<p:growl autoUpdate="true" id="growl" sticky="true"/>
+							<p:messages id="msgCriarMensagem" autoUpdate="true"/>
+							<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Para.:"/>
+									 <p:inputText id="destinatario" name="destinatario" value="#{msnMB.usuarioDestino.nome}"
+									 	          required="true" requiredMessage="[Destinatário] É necessário escolher um Destinatário para a Mensagem!" 
+								            style="width:200px;" onkeypress="return false;"/>
+								<h:outputLink value="javascript:void(0)" onclick="dialogDestinatario.show()" title="Seleção de Destinatário">     
+								    <p:graphicImage value="/images/participante-icon.png" />  
+							 	</h:outputLink>  	
+							</h:panelGrid>
+							<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Título:"/>
+									 <p:inputText value="#{msnMB.msn.titulo}" 
+									 			  required="true" requiredMessage="[Título] É necessário escolher um Título para a Mensagem!"
+								                  style="width:400px;" />  	
+							</h:panelGrid>
+							<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Data.:"/>
+									 <h:outputText value="#{msnMB.msn.data}">
+									 	<f:convertDateTime pattern="dd/MM/yyyy"/>
+									 </h:outputText>  	
+							</h:panelGrid>
+							<p:editor value="#{msnMB.msn.mensagem}" widgetVar="corpoMensagem" required="true"
+							          requiredMessage="[Mensagem] A Mensagem está vazia!" height="200"/>
+							<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid" style="border:none;">
+								<h:outputText value="* Campos Obrigatórios!"/> <br/><br/>
+								<p:commandButton id="commandButtonCriar" action="#{msnMB.enviarMensagem}" value="Enviar"
+									             image="ui-icon ui-icon-pencil" update="msgCriarMensagem,growl, centro">
+									<f:setPropertyActionListener target="#{msnMB.usuarioOrigem}" value="#{loginusuarioMB.usuario}" />
+									<f:setPropertyActionListener target="#{msnMB.criarEmail}" value="#{false}" />
+					            	<f:setPropertyActionListener target="#{msnMB.mostrarLidas}" value="#{false}" />
+					              	<f:setPropertyActionListener target="#{msnMB.mostrarNovas}" value="#{true}" />
+								</p:commandButton>
+								<p:commandButton id="commandButtonLimpar" value="Limpar" onclick="corpoMensagem.clear()"
+								                 image="ui-icon ui-icon-pencil"/>	                 
+							</h:panelGrid>
+						</h:panelGrid>
+       				</p:panel>
+      				<p:dataTable id="dataTableMensagensNovas" var="msn" rendered="#{msnMB.mostrarNovas}"
+				             value="#{msnMB.listaMsnNaoLida}" paginator="true" rows="10">
+				        <f:facet name="header">
+			           		Lista de Mensagens Novas de #{msnMB.usuario.nome}
+			       		</f:facet>
+						<p:column style="width:10px; text-align:center;">
+			       		    <f:facet name="header">
+			               	<h:outputText value="Código" />
+			           		</f:facet>
+			           		<h:outputText value="#{msn.codigomsnusuario}" style="font-weight: bold;"/>
+			       		</p:column>
+			       		<p:column sortBy="#{msn.usuario1.nome}" filterBy="#{msn.usuario1.nome}">
+			       		    <f:facet name="header">
+			               		<h:outputText value="Remetente" />
+			           		</f:facet>
+			           		<h:outputText value="#{msn.usuario1.nome}" style="font-weight: bold;"/>
+			           	</p:column>
+			           	<p:column sortBy="#{msn.titulo}" filterBy="#{msn.titulo}">
+			       		    <f:facet name="header">
+			               		<h:outputText value="Título" />
+			           		</f:facet>
+			           		<h:outputText value="#{msn.titulo}" style="font-weight: bold;"/>
+			           	</p:column>
+			           	<p:column style="text-align:center;">
+			       		    <f:facet name="header">
+			               		<h:outputText value="Data" />
+			           		</f:facet>
+			           		<h:outputText value="#{msn.data}" style="font-weight: bold;">
+			           			<f:convertDateTime pattern="dd/MM/yyyy"/>
+			           		</h:outputText>
+			           	</p:column>
+			           	<p:column headerText="Ações" style="width:140px;text-align:center;" >
+				        	<p:commandButton title="Ler Mensagem"  value="Ler Mensagem" update="centro,:formMsn:displayViewNova" image="ui-icon ui-icon-search" 
+				        	                 oncomplete="dialogLerMensagemNova.show()" >
+			       				<f:setPropertyActionListener target="#{msnMB.msnSelecionado}" value="#{msn}" />
+				       		</p:commandButton>
+				        </p:column>	
+				    </p:dataTable>
+      					<p:dataTable id="dataTableMensagensLidas" var="msn" rendered="#{msnMB.mostrarLidas}"
+				             value="#{msnMB.listaMsnLida}" paginator="true" rows="10">
+				        <f:facet name="header">
+			           		Lista de mensagens Lidas de #{msnMB.usuario.nome}
+			       		</f:facet>
+						<p:column style="width:10px; text-align:center;">
+			       		    <f:facet name="header">
+			               	<h:outputText value="Código" />
+			           		</f:facet>
+			           		<h:outputText value="#{msn.codigomsnusuario}" style="color: gray;"/>
+			       		</p:column>
+			       		<p:column sortBy="#{msn.usuario1.nome}" filterBy="#{msn.usuario1.nome}">
+			       		    <f:facet name="header">
+			               		<h:outputText value="Remetente" />
+			           		</f:facet>
+			           		<h:outputText value="#{msn.usuario1.nome}" style="color: gray;"/>
+			           	</p:column>
+			           	<p:column sortBy="#{msn.titulo}" filterBy="#{msn.titulo}">
+			       		    <f:facet name="header">
+			               		<h:outputText value="Título" />
+			           		</f:facet>
+			           		<h:outputText value="#{msn.titulo}" style="color: gray;"/>
+			           	</p:column>
+			           	<p:column style="text-align:center;">
+			       		    <f:facet name="header">
+			               		<h:outputText value="Data" />
+			           		</f:facet>
+			           		<h:outputText value="#{msn.data}" style="color: gray;">
+			           			<f:convertDateTime pattern="dd/MM/yyyy"/>
+			           		</h:outputText>
+			           	</p:column>
+			           	<p:column headerText="Ações" style="width:140px;text-align:center;" >
+				        	<p:commandButton title="Ler Mensagem"  value="Ler Mensagem" update="centro,:formMsn:displayViewLida" image="ui-icon ui-icon-search" 
+				        	                 oncomplete="dialogLerMensagemLida.show()" >
+			       				<f:setPropertyActionListener target="#{msnMB.msnSelecionado}" value="#{msn}" />
+				       		</p:commandButton>
+				        </p:column>	
+				    </p:dataTable>
+       			</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formMsn">
+    		<!-- DIALOG PARA VISUALIZAÇÃO DE DETALHES DAS MENSAGENS NOVAS-->
+		  	<p:dialog header="Visualizando a mensagem recebida" widgetVar="dialogLerMensagemNova" resizable="false"
+					   width="600" showEffect="explode" hideEffect="explode" modal="true" closable="false">
+				<h:panelGrid id="displayViewNova" style="margin-left: auto; margin-right: auto;">
+					<p:panel style="width:150px; height: 150px;border:none;margin-left: auto; margin-right: auto;">
+						 	<p:graphicImage url="/images/msn-icon.png"/>
+						</p:panel>
+					<p:panel header="Dados Emissor">
+						<h:panelGrid columns="1">
+							
+								<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+									<h:outputText value="De...:"/>
+									<h:outputText value="#{msnMB.msnSelecionado.usuario1.nome}" style="color:blue;"/>	   	
+								</h:panelGrid>
+								<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+									<h:outputText value="Data:"/>
+									<h:outputText value="#{msnMB.msnSelecionado.data}" style="color:blue;">
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</h:panelGrid>
+							
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Título da Mensagem">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="#{msnMB.msnSelecionado.titulo}" style="color:blue;"/>	
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Mensagem">
+						<h:panelGrid columns="1" columnClasses="label, value">
+							<p:editor value="#{msnMB.msnSelecionado.mensagem}" style="color:blue;" height="200" disabled="true"/>
+						</h:panelGrid>
+					</p:panel>
+					<h:panelGrid columns="2">
+						<p:commandButton title="Voltar" value="Voltar" update="centro" 
+					        	     image="ui-icon ui-icon-close" oncomplete="dialogLerMensagemNova.hide()">
+						</p:commandButton>
+						<p:commandButton title="Marcar como lida" value="Marcar como lida" update="centro" 
+						        	     image="ui-icon ui-icon-close" oncomplete="dialogLerMensagemNova.hide()"
+						        	     action="#{msnMB.lida}">
+					       				<f:setPropertyActionListener target="#{msnMB.msnSelecionado.statusmensagem}" value="#{true}" />
+						</p:commandButton>
+					</h:panelGrid>
+				</h:panelGrid>	   
+			</p:dialog>
+			<!-- DIALOG PARA VISUALIZAÇÃO DE DETALHES DAS MENSAGENS LIDAS -->
+		  	<p:dialog header="Visualizando a mensagem recebida" widgetVar="dialogLerMensagemLida" resizable="false"
+					   width="600" showEffect="explode" hideEffect="explode" modal="true" closable="false">
+				<h:panelGrid id="displayViewLida" style="margin-left: auto; margin-right: auto;">
+					<p:panel style="width:150px; height: 150px;border:none;margin-left: auto; margin-right: auto;">
+						 	<p:graphicImage url="/images/msn-icon.png"/>
+						</p:panel>
+					<p:panel header="Dados Emissor">
+						<h:panelGrid columns="1">
+							
+								<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+									<h:outputText value="De...:"/>
+									<h:outputText value="#{msnMB.msnSelecionado.usuario1.nome}" style="color:blue;"/>	   	
+								</h:panelGrid>
+								<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+									<h:outputText value="Data:"/>
+									<h:outputText value="#{msnMB.msnSelecionado.data}" style="color:blue;">
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</h:panelGrid>
+							
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Título da Mensagem">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="#{msnMB.msnSelecionado.titulo}" style="color:blue;"/>	
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Mensagem">
+						<h:panelGrid columns="1" columnClasses="label, value">
+							<p:editor value="#{msnMB.msnSelecionado.mensagem}" style="color:blue;" height="200" disabled="true"/>
+						</h:panelGrid>
+					</p:panel>
+					<h:panelGrid columns="2">
+						<p:commandButton title="Voltar" value="Voltar" update="centro" 
+					        	     image="ui-icon ui-icon-close" oncomplete="dialogLerMensagemLida.hide()">
+						</p:commandButton>
+						<p:commandButton title="Marcar como não lida" value="Marcar como não lida" update="centro" 
+						        	     image="ui-icon ui-icon-close" oncomplete="dialogLerMensagemLida.hide()"
+						        	     action="#{msnMB.lida}">
+					       				<f:setPropertyActionListener target="#{msnMB.msnSelecionado.statusmensagem}" value="#{false}" />
+						</p:commandButton>
+					</h:panelGrid>
+				</h:panelGrid>	   
+			</p:dialog>
+			<!-- DIALOG PARA SELEÇÃO DE DESTINATÁRIO -->
+    		<p:dialog header="Seleção do Destinatário" widgetVar="dialogDestinatario" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogDestinatario" closable="true" modal="true">
+				<p:dataTable id="dataTableDestinatario" var="destinatario" 
+					             value="#{msnMB.listaUsuarios}" paginator="true" rows="10">
+				       		<f:facet name="header">
+				           		Lista de Destinatarios cadastrados
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{destinatario.codigousuario}" />
+				       		</p:column>
+				               <p:column sortBy="#{destinatario.nome}" filterBy="#{destinatario.nome}" style="width:100px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome" />
+				           		</f:facet>
+				           		<h:outputText value="#{destinatario.nome}" />
+				       		</p:column>
+					        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+					        	<p:commandButton title="Selecionar" value="Selecionar" update=":formTableMensagens:destinatario" 
+					        	                 image="ui-icon ui-icon-search" oncomplete="dialogDestinatario.hide()">
+				       				<f:setPropertyActionListener target="#{msnMB.usuarioDestino}" value="#{destinatario}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+			</p:dialog>
+    	</h:form>
+	</h:body>
+</html>

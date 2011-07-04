@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+<!--         <style> -->
+<!--         	.ui-layout-bd {   -->
+<!--  			       border: 0;margin:0;   -->
+<!-- 			}  -->
+<!--        	</style> -->
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true" id="layoutCadastraUsuarios">
+			<!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+            <!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+            <!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+            <!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="false"  scrollable="true" width="250">
+       			<!-- FORMULÁRIO PARA CADASTRAR USUÁRIOS -->
+       			<h:form>
+       				<p:growl autoUpdate="true" id="growl" sticky="true"/>
+ 					<p:messages autoUpdate="true"/>
+						<p:panel header="Dados Pessoais">
+							<h:panelGrid columns="4" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Nome: *" />
+									<p:inputText maxlength="50" value="#{usuarioMB.usuario.nome}" required="true" requiredMessage="[Nome] O campo NOME deverá ser preenchido" style="width:200px"/>
+								<h:outputText value="Data de Nascimento:" />
+									<p:calendar value="#{usuarioMB.usuario.datanascimento}" locale="pt_BR" showButtonPanel="true" navigator="true" pattern="dd/MM/yyyy"/> 
+								<h:outputText value="Tipo de Documento:" />
+									<h:selectOneMenu id="documento" value="#{usuarioMB.usuario.tipodocumento}" effect="drop" style="width:209px">
+										<f:selectItem itemLabel="Carteira de Identidade" itemValue="1"/>
+										<f:selectItem itemLabel="CPF" itemValue="2"/>
+										<f:selectItem itemLabel="Passaporte" itemValue="3"/>
+								    </h:selectOneMenu>
+								<h:outputText value="Número do documento:" />
+									<p:inputText maxlength="20" value="#{usuarioMB.usuario.numerodocumento}" style="width:120px"/>
+								<h:outputText value="Sexo:" />	
+									<p:selectOneRadio value="#{usuarioMB.usuario.sexo}">
+										<f:selectItem itemLabel="Masculino" itemValue="M"/>
+										<f:selectItem itemLabel="Feminino" itemValue="F"/>
+									</p:selectOneRadio>	
+								<h:outputText value="Enviar uma Fotografia...:" />
+									<p:fileUpload fileUploadListener="#{usuarioMB.usuario.uploadFoto}" label="Selecionar Fotografia..." mode="advanced" update="messages" sizeLimit="10000000" allowTypes="png,gif,jpg"/>	
+							</h:panelGrid>
+						</p:panel>
+						<p:panel header="Detalhes do Endereço">
+							<h:panelGrid columns="2" columnClasses="label, value">
+								<h:outputText value="Rua....:" />
+									<p:inputText maxlength="50" value="#{usuarioMB.usuario.enderecorua}" style="width:330px"/>
+							</h:panelGrid>
+							<h:panelGrid columns="4" columnClasses="label, value">
+								<h:outputText value="Bairro.:" />
+									<p:inputText maxlength="50" value="#{usuarioMB.usuario.enderecobairro}" style="width:141px"/>
+								<h:outputText value="Cidade:" />
+									<p:inputText maxlength="50" value="#{usuarioMB.usuario.enderecocidade}" style="width:132px;"/>
+								<h:outputText value="Estado:" />
+									<h:selectOneMenu id="estado" value="#{usuarioMB.usuario.enderecouf}" effect="drop" style="width:150px" height="200">
+										<f:selectItem itemLabel="Acre" itemValue="AC"/>
+										<f:selectItem itemLabel="Alagoas" itemValue="AL"/>
+										<f:selectItem itemLabel="Amapá" itemValue="AP"/>
+										<f:selectItem itemLabel="Amazonas" itemValue="AM"/>
+										<f:selectItem itemLabel="Bahia" itemValue="BA"/>
+										<f:selectItem itemLabel="Ceará" itemValue="CE"/>
+										<f:selectItem itemLabel="Distrito Federal" itemValue="DF"/>
+										<f:selectItem itemLabel="Espirito Santo" itemValue="ES"/>
+										<f:selectItem itemLabel="Goiás" itemValue="GO"/>
+										<f:selectItem itemLabel="Maranhão" itemValue="MA"/>
+										<f:selectItem itemLabel="Mato Grosso" itemValue="MT"/>
+										<f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS"/>
+										<f:selectItem itemLabel="Minas Gerais" itemValue="MG"/>
+										<f:selectItem itemLabel="Pará" itemValue="PA"/>
+										<f:selectItem itemLabel="Paraíba" itemValue="PB"/>
+										<f:selectItem itemLabel="Paraná" itemValue="PR"/>
+										<f:selectItem itemLabel="Pernambuco" itemValue="PE"/>
+										<f:selectItem itemLabel="Piauí" itemValue="PI"/>
+										<f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ"/>
+										<f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN"/>
+										<f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS"/>
+										<f:selectItem itemLabel="Rondônia" itemValue="RO"/>
+										<f:selectItem itemLabel="Roraima" itemValue="RR"/>
+										<f:selectItem itemLabel="Santa Catarina" itemValue="SC"/>
+										<f:selectItem itemLabel="São Paulo" itemValue="SP"/>
+										<f:selectItem itemLabel="Sergipe" itemValue="SE"/>
+										<f:selectItem itemLabel="Tocantins" itemValue="TO"/>
+									</h:selectOneMenu>
+								<h:outputText value="CEP:" />
+									<p:inputMask value="#{usuarioMB.usuario.enderecocep}" mask="99.999-999"/>
+							</h:panelGrid>
+						</p:panel>
+						<p:panel header="Informações de Contato">
+							<h:panelGrid columns="4" columnClasses="label, value">
+								<h:outputText value="E-mail:" />
+									<p:inputText maxlength="60" value="#{usuarioMB.usuario.email}" style="width:180px"/>
+								<h:outputText value="Telefone de contato:" />	
+									<p:inputMask value="#{usuarioMB.usuario.telefone}" mask="(99) 9999-9999"/>
+							</h:panelGrid>
+						</p:panel>
+						<p:panel header="Informações de acesso ao SIAF 2.0">
+							<h:panelGrid columns="4" columnClasses="label, value">
+								<h:outputText value="Usuário: *" />
+									<p:inputText maxlength="30" value="#{usuarioMB.usuario.usuario}" required="true" requiredMessage="[Usuário] O campo USUARIO deverá ser preenchido"/>
+								<h:outputText value="Tipo de Usuário:" />
+									<h:selectOneMenu id="tipoUsuario" value="#{usuarioMB.usuario.tipousuario}" effect="drop" style="width:209px">
+										<f:selectItem itemLabel="Participante" itemValue="3"/>
+										<f:selectItem itemLabel="Profissional de Saúde" itemValue="2"/>
+										<f:selectItem itemLabel="Administrador" itemValue="1"/>
+									</h:selectOneMenu>
+								<h:outputText value="Senha: *" />	
+									<p:password maxlength="30" value="#{usuarioMB.usuario.senha}" feedback="false" required="true" requiredMessage="[Senha] O campo SENHA deverá ser preenchido"/>
+								<h:outputText value="Data Cadastro:" />	
+									<p:calendar value="#{usuarioMB.usuario.datacadastro}" disabled="true" pattern="dd/MM/yyyy"/>
+								<h:outputText value="Data Modificação:" />	
+									<p:calendar value="#{usuarioMB.usuario.datamodificacao}" disabled="true" pattern="dd/MM/yyyy"/>		
+								<h:outputText value="Usuário que está cadastrando:" />	
+									<p:inputText value="#{loginusuarioMB.usuario.nome}" disabled="true" style="width:200px"/>
+							</h:panelGrid>
+						</p:panel>
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="* Campos Obrigatórios!"/> <br/><br/>
+							<p:commandButton value="Cadastrar" action="#{usuarioMB.cadastrarUsuario}" image="ui-icon ui-icon-pencil" update="growl" ajax="false">
+								<f:setPropertyActionListener target="#{usuarioMB.usuario.usuariomodificacao}" value="#{loginusuarioMB.usuario.codigousuario}" />
+							</p:commandButton>			
+						</h:panelGrid>
+				</h:form>
+       		</p:layoutUnit>
+			<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+			<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    </h:body>
+</html>

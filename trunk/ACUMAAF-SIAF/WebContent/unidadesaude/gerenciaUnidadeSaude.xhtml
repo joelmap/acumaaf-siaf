@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário  e Programações" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO DIREITO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Galeria de Imagens" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<h:form>
+	       			<h:panelGrid columns="3" style="margin-left: auto; margin-right: auto;">
+	     				<h:panelGrid>
+	      					<p:panel style="width:200px; height: 220px;border:none;margin-left: auto; margin-right: auto;" header="Cadastrar Unidade de Saúde" >
+	      						<p:commandLink action="#{unidadesaudeMB.chamaPaginaCadastrarUnidadeSaude}">
+	      							<p:graphicImage alt="Cadastrar Unidade de Saúde" url="/images/unidadesaude-cad-icon.png" 
+	      							                title="Cadastrar Unidade de Saúde" onmouseover="this.width=180;this.height=180;" 
+	      							                onmouseout="this.width=140;this.height=140;" 
+	      							                style="margin-left: auto; margin-right: auto;"/>
+	      						</p:commandLink>
+	      					</p:panel>	
+	      				</h:panelGrid>
+	      				<h:panelGrid>
+	      					<p:panel style="width:200px; height: 220px; border:none;margin-left: auto; margin-right: auto;text-algin:center" header="Listar Unidades de Saúde" >
+	      						<p:commandLink action="#{unidadesaudeMB.chamaPaginaListarUnidadesSaude}">
+	      							<p:graphicImage alt="Listar Unidades de Saúde" url="/images/lista-icon.png" 
+	      											title="Listar Unidades de Saúde" onmouseover="this.width=180;this.height=180;" 
+	      											onmouseout="this.width=140;this.height=140;" 
+	      											style="margin-left: auto; margin-right: auto;"/>
+	      							</p:commandLink>				
+	      					</p:panel>
+	      				</h:panelGrid>
+	      				<h:panelGrid>
+	      					<p:panel style="width:200px; height: 220px; border:none;margin-left: auto; margin-right: auto;text-algin:center" header="Vincular Participante" >
+	      						<p:commandLink action="#{unidadesaudeMB.chamaPaginaGerenciarVinculoUsuarioUnidadesSaude}">
+	      							<p:graphicImage alt="Vincular Participante" url="/images/vinculousuariounidadesaude-icon.png" 
+	      							                title="Vincular Participante" onmouseover="this.width=180;this.height=180;" 
+	      							                onmouseout="this.width=140;this.height=140;" style="margin-left: auto; 
+	      							                margin-right: auto;"/>
+	      						</p:commandLink>	
+	      					</p:panel>
+	      				</h:panelGrid>
+	       			</h:panelGrid>
+	       			<h:panelGrid columns="2" style="margin-left: auto; margin-right: auto;">
+	      				<h:panelGrid>
+	      					<p:panel style="width:240px; height: 220px; border:none;margin-left: auto; margin-right: auto;text-algin:center" header="Gerenciar Equipe de Saúde da Família" >
+	      						<p:commandLink action="#{equipesaudefamiliaMB.chamaPaginaGerenciarEquipeSaudeFamilia}">
+	      							<p:graphicImage alt="Gerenciar Equipe de Saúde da Família" url="/images/equipe-saude-familia-icon.png" 
+	      							                title="Gerenciar Equipe de Saúde da Família" onmouseover="this.width=180;this.height=180;" 
+	      							                onmouseout="this.width=140;this.height=140;" style="margin-left: auto; 
+	      							                margin-right: auto;"/>
+	      						</p:commandLink>	
+	      					</p:panel>
+	      				</h:panelGrid>
+	      				<h:panelGrid style="margin-left: auto; margin-right: auto;">
+		     				<p:panel style="width:240px; height: 220px; border:none;margin-left: auto; margin-right: auto;text-algin:center" header="Vincular Profissional de Saúde" >
+	      						<p:commandLink action="#{usuariotrabalhaequipesaudefamiliaMB.chamaPaginaGerenciaVinculoUsuarioEquipeSaudeFamilia}" style="margin-left: auto; 
+		      							                margin-right: auto;">
+	      							<p:graphicImage alt="Vincular Profissional de Saúde" url="/images/profissional-saude-icon.png" 
+	      							                title="Vincular Profissional de Saúde" onmouseover="this.width=180;this.height=180;" 
+	      							                onmouseout="this.width=140;this.height=140;" style="margin-left: auto; 
+		      							                margin-right: auto;"/> 
+	      						</p:commandLink>	
+	      					</p:panel>
+		      			</h:panelGrid>
+	       			</h:panelGrid>
+       			</h:form>
+       		<!-- LAYOUT DO RODAPÉ DA PÁGINA -->	
+ 		   	</p:layoutUnit>
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+	</h:body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<!-- TABELA COM OS INSTRUMENTOS DE COLETA CADASTRADOS -->
+       			<h:form id="formTableListaInstrumentosColeta">
+					<p:dataTable id="dataTableListaInstrumentosColeta" var="instrumentoColeta" 
+					             value="#{instrumentocoletaMB.listaInstrumentoColeta}" paginator="true" rows="10">s
+				       		<f:facet name="header">
+				           		Lista de Instrumentos de Coleta cadastrados
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{instrumentoColeta.codigoinstrumentocoleta}" />
+				       		</p:column>
+				            <p:column sortBy="#{instrumentoColeta.nome}" filterBy="#{instrumentoColeta.nome}">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome" />
+				           		</f:facet>
+				           		<h:outputText value="#{instrumentoColeta.nome}" />
+				       		</p:column>
+				       		<p:column>
+				       		    <f:facet name="header">
+				               		<h:outputText value="Unidade de Medida" />
+				           		</f:facet>
+				           		<h:outputText value="#{instrumentoColeta.unidademedida}" />
+				       		</p:column>
+					        <p:column headerText="Ações" style="width:90px;" >
+					        	<p:commandButton title="Visualizar" value="Visualizar" update=":formListaInstrumentoColeta:displayView" image="ui-icon ui-icon-search" oncomplete="dialogInstrumentoColeta.show()">
+				       				<f:setPropertyActionListener target="#{instrumentocoletaMB.instrumentoColetaSelecionado}" value="#{instrumentoColeta}" />
+				       				<f:setPropertyActionListener value="#{false}" target="#{instrumentocoletaMB.ativo}" />
+					       		</p:commandButton>
+                                <!-- FOI COMENTADO PORQUE NAS CONSULTAS LEVA-SE EM CONSIDERAÇÃO O CÓDIGO DO PESO E DA PRESSÃO ARTERIAL DO PARTICIPANTE.
+                                     SE NÃO FOSSE DESTA FORMA, COMO SABERIA SE O VALOR CORRESPONDE A UM PESO OU A UMA PRESSAO ARTERIAL? O X DA PRESSAO 120X80 NAO
+                                     PODE SER LEVADO EM CONSIDERAÇÃO PORQUE E SE O PROFISSIONAL CRIAR UM OUTRO INSTRUMENTO QUE NAO CONTENHA O X? -->
+<!-- 					       		<p:commandButton title="Editar" update=":formListaInstrumentoColeta:panelGridDialogEditarInstrumentoColeta" image="ui-icon ui-icon-pencil" oncomplete="panelGridDialogEditarInstrumentoColeta.show()"> -->
+<!-- 				       				<f:setPropertyActionListener target="#{instrumentocoletaMB.instrumentoColetaSelecionado}" value="#{instrumentoColeta}" /> -->
+<!-- 				       				<f:setPropertyActionListener value="#{true}" target="#{instrumentocoletaMB.ativo}" /> -->
+<!-- 					       		</p:commandButton> -->
+<!-- 					       		<p:commandButton title="Deletar" update=":formListaInstrumentoColeta:panelGridDialogEditarInstrumentoColeta" image="ui-icon ui-icon-close" oncomplete="confirmacaoDialog.show()"> -->
+<!-- 					       				<f:setPropertyActionListener target="#{instrumentocoletaMB.instrumentoColetaSelecionado}" value="#{instrumentoColeta}" /> -->
+<!-- 					       				<f:setPropertyActionListener value="#{false}" target="#{instrumentocoletaMB.ativo}" /> -->
+<!-- 					       		</p:commandButton> -->
+					        </p:column>	
+				    </p:dataTable>	
+       			</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formListaInstrumentoColeta">
+    		 <!-- DIALOG PARA VISUALIZAÇÃO DE DETALHES DE UM DETERMINADO INSTRUMENTO DE COLETA SELECIONADO PELO USUÁRIO -->
+    		 <p:dialog header="Detalhes do Instrumento de Coleta" widgetVar="dialogInstrumentoColeta" resizable="false"
+					   width="400" showEffect="explode" hideEffect="explode" modal="true">
+				<p:panel style="width:150px; height: 150px;border:none;margin-left: auto; margin-right: auto;">
+				 	<p:graphicImage url="/images/instrumentocoleta-icon.png"/>
+				</p:panel>
+				<h:panelGrid id="displayView" cellpadding="4" style="margin-left: auto; margin-right: auto;">
+					<p:panel header="Dados do Instrumento de Coleta">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="Código:" style="text-weight:bold;"/> 
+								<h:outputText value="#{instrumentocoletaMB.instrumentoColetaSelecionado.codigoinstrumentocoleta}" style="color:blue;"/>
+							<h:outputText value="Nome:* " style="text-weight:bold;"/>
+								<h:outputText value="#{instrumentocoletaMB.instrumentoColetaSelecionado.nome}" style="color:blue;" />
+							<h:outputText value="Unidade de Medida: " style="text-weight:bold;"/>
+								<h:outputText value="#{instrumentocoletaMB.instrumentoColetaSelecionado.unidademedida}" style="color:blue;" />
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Observações">
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Observação: " style="text-weight:bold;"/>
+								<h:outputText value="#{instrumentocoletaMB.instrumentoColetaSelecionado.descricao}" style="color:blue;" />	
+						</h:panelGrid>
+					</p:panel>
+	             </h:panelGrid>
+			</p:dialog>
+			<!-- DIALOG PARA FORMULÁRIO DE EDIÇÃO DE UM DETERMINADO INSTRUMENTO DE COLETA SELECIONADO PELO USUÁRIO -->
+			<p:dialog header="Edição do Instrumento de Coleta" widgetVar="panelGridDialogEditarInstrumentoColeta" resizable="false"
+			          width="500" showEffect="explode" hideEffect="explode" id="idDialogInstrumentoColetaEdit" closable="false" modal="true">
+			    <h:panelGrid id="panelGridDialogEditarInstrumentoColeta">
+			    	<p:growl autoUpdate="true" id="growl" sticky="true"/>
+					<p:messages id="msgeditar" autoUpdate="true"/>
+					<p:panel header="Dados do Instrumento de Coleta">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="Código:"/> 
+								<h:outputText value="#{instrumentocoletaMB.instrumentoColetaSelecionado.codigoinstrumentocoleta}"/>
+							<h:outputText value="Nome: *" />
+								<p:inputText maxlength="50" value="#{instrumentocoletaMB.instrumentoColetaSelecionado.nome}" required="true" 
+								             requiredMessage="[Nome] O campo NOME deverá ser preenchido" style="width:200px"
+								             rendered="#{instrumentocoletaMB.ativo}">
+								</p:inputText>
+							<h:outputText value="Unidade de Medida: *" />
+								<p:inputText maxlength="20" value="#{instrumentocoletaMB.instrumentoColetaSelecionado.unidademedida}" required="true" 
+								             requiredMessage="[Unidade de Medida] O campo UNIDADE DE MEDIDA deverá ser preenchido" style="width:200px"
+								             rendered="#{instrumentocoletaMB.ativo}">
+								</p:inputText>	
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Observações">
+						<h:panelGrid id="panelGridDescricao" columns="2" columnClasses="label, value">
+							<h:outputText value="Observação: " />
+								<p:inputTextarea maxlength="300" value="#{instrumentocoletaMB.instrumentoColetaSelecionado.descricao}" style="width:300px; 
+											     height: 60px;" effectDuration="400"/>	
+						</h:panelGrid>
+					</p:panel>
+					<h:panelGrid>
+						<h:outputText value="* Campos Obrigatórios!"/>
+						<p:commandButton id="commandButtonEditar" value="Editar" action="#{instrumentocoletaMB.editar}" 
+						                 update=":formTableListaInstrumentosColeta:dataTableListaInstrumentosColeta,msgeditar,growl" 
+						                 image="ui-icon ui-icon-pencil" oncomplete="handleEditRequest(xhr, status, args)"/>
+					</h:panelGrid>
+			    </h:panelGrid>      
+			</p:dialog>
+			<!-- DIALOG CONFIRMAÇÃO DA DELEÇÃO -->
+			<p:confirmDialog message="Deseja realmente deletar o registro selecionado?" width="200"
+                  				  showEffect="explode" hideEffect="explode"
+                  				  header="Confirmação de Deleção" severity="alert" widgetVar="confirmacaoDialog" modal="true">
+			    	<p:commandButton value="Deletar" image="ui-icon ui-icon-check" 
+			    	                 update=":formTableListaInstrumentosColeta:dataTableListaInstrumentosColeta" 
+			    					 actionListener="#{instrumentocoletaMB.deletar}" 
+    		                         oncomplete="confirmacaoDialog.hide()"/>
+		        	<p:commandButton value="Cancelar" image="ui-icon ui-icon-close" onclick="confirmacaoDialog.hide()" type="button" />
+	    	</p:confirmDialog>
+    	</h:form>
+    	<!-- SCRIPT PARA VERIFICAR SE O USUÁRIO PREENCHEU TODOS OS CAMPOS OBRIGATÓRIOS DA PÁGINA -->
+    	<script type="text/javascript">  
+		    function handleEditRequest(xhr, status, args) {  
+		        if(args.validationFailed) {  
+		            jQuery('#idDialogInstrumentoColetaEdit').parent().effect("shake", { times:3 }, 100);  
+		        } else {  
+		        	panelGridDialogEditarInstrumentoColeta.hide();    
+		        }  
+            }  
+        </script>
+	</h:body>
+</html>

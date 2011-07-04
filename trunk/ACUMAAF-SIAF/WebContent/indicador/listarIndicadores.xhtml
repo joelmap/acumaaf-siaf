@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<!-- TABELA COM OS INDICADORES CADASTRADOS -->
+       			<h:form id="formTableListaIndicadores">
+					<p:dataTable id="dataTableListaIndicadores" var="indicador" 
+					             value="#{indicadorMB.listaIndicador}" paginator="true" rows="10">s
+				       		<f:facet name="header">
+				           		Lista de Indicadores cadastradas
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{indicador.codigoindicador}" />
+				       		</p:column>
+				               <p:column sortBy="#{indicador.nome}" filterBy="#{indicador.nome}" style="width:50px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome" />
+				           		</f:facet>
+				           		<h:outputText value="#{indicador.nome}" />
+				       		</p:column>
+					        <p:column sortBy="#{indicador.descricao}" filterBy="#{indicador.descricao}" style="width:140px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Descrição" />
+				           		</f:facet>
+				           		<h:outputText value="#{indicador.descricao}" />
+				       		</p:column>
+					        <p:column headerText="Ações" style="width:30px;" >
+					        	<p:commandButton title="Visualizar" update=":formListaIndicador:displayView" image="ui-icon ui-icon-search" oncomplete="dialogIndicador.show()">
+				       				<f:setPropertyActionListener target="#{indicadorMB.indicadorSelecionado}" value="#{indicador}" />
+				       				<f:setPropertyActionListener value="#{false}" target="#{indicadorMB.ativo}" />
+					       		</p:commandButton>
+					       		<p:commandButton title="Editar" update=":formListaIndicador:panelGridDialogEditarIndicador" image="ui-icon ui-icon-pencil" oncomplete="dialogIndicadorEdit.show()">
+				       				<f:setPropertyActionListener target="#{indicadorMB.indicadorSelecionado}" value="#{indicador}" />
+				       				<f:setPropertyActionListener value="#{true}" target="#{indicadorMB.ativo}" />
+					       		</p:commandButton>
+					       		<p:commandButton title="Deletar" update=":formListaIndicador:panelGridDialogEditarIndicador" image="ui-icon ui-icon-close" oncomplete="confirmacaoDialog.show()">
+					       				<f:setPropertyActionListener target="#{indicadorMB.indicadorSelecionado}" value="#{indicador}" />
+					       				<f:setPropertyActionListener value="#{false}" target="#{indicadorMB.ativo}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>	
+       			</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formListaIndicador">
+    		 <!-- DIALOG PARA VISUALIZAÇÃO DE DETALHES DE UM DETERMINADO INDICADOR SELECIONADO PELO USUÁRIO -->
+    		 <p:dialog header="Detalhes da Atividade Fisica" widgetVar="dialogIndicador" resizable="false"
+					   width="300" showEffect="explode" hideEffect="explode" modal="true">
+				<p:panel style="width:150px; height: 150px;border:none;margin-left: auto; margin-right: auto;">
+				 	<p:graphicImage url="/images/indicador-icon.png"/>
+				</p:panel>
+				<h:panelGrid id="displayView" cellpadding="4" style="margin-left: auto; margin-right: auto;">
+					<p:panel header="Dados da Atividade Física">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="Código:" style="text-weight:bold;"/> 
+								<h:outputText value="#{indicadorMB.indicadorSelecionado.codigoindicador}" style="color:blue;"/>
+							<h:outputText value="Nome........: " style="text-weight:bold;"/>
+								<h:outputText value="#{indicadorMB.indicadorSelecionado.nome}" style="color:blue;" />
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Observações">
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Observação: " style="text-weight:bold;"/>
+								<h:outputText value="#{indicadorMB.indicadorSelecionado.descricao}" style="color:blue;" />	
+						</h:panelGrid>
+					</p:panel>
+	             </h:panelGrid>
+			</p:dialog>
+			<!-- DIALOG PARA FORMULÁRIO DE EDIÇÃO DE UM DETERMINADO INDICADOR SELECIONADO PELO USUÁRIO -->
+			<p:dialog header="Edição de Indicador" widgetVar="dialogIndicadorEdit" resizable="false"
+			          width="450" showEffect="explode" hideEffect="explode" id="idDialogIndicadorEdit" closable="false" modal="true">
+			    <h:panelGrid id="panelGridDialogEditarIndicador">
+			    	<p:growl autoUpdate="true" id="growl" sticky="true"/>
+					<p:messages id="msgeditar" autoUpdate="true"/>
+					<p:panel header="Dados do Indicador">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="Código:"/> 
+								<h:outputText value="#{indicadorMB.indicadorSelecionado.codigoindicador}"/>
+							<h:outputText value="Nome........: *" />
+								<p:inputText maxlength="50" value="#{indicadorMB.indicadorSelecionado.nome}" required="true" 
+								             requiredMessage="[Nome] O campo NOME deverá ser preenchido" style="width:200px"
+								             rendered="#{indicadorMB.ativo}">
+								</p:inputText>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Observações">
+						<h:panelGrid id="panelGridDescricao" columns="2" columnClasses="label, value">
+							<h:outputText value="Observação: " />
+								<p:inputTextarea maxlength="300" value="#{indicadorMB.indicadorSelecionado.descricao}" style="width:300px; 
+											     height: 60px;" effectDuration="400"/>	
+						</h:panelGrid>
+					</p:panel>
+					<h:panelGrid>
+						<h:outputText value="* Campos Obrigatórios!"/>
+						<p:commandButton id="commandButtonEditar" value="Editar" action="#{indicadorMB.editar}" 
+						                 update=":formTableListaIndicadores:dataTableListaIndicadores,msgeditar,growl" 
+						                 image="ui-icon ui-icon-pencil" oncomplete="handleEditRequest(xhr, status, args)"/>
+					</h:panelGrid>
+			    </h:panelGrid>      
+			</p:dialog>
+			<!-- DIALOG CONFIRMAÇÃO DA DELEÇÃO -->
+			<p:confirmDialog message="Deseja realmente deletar o registro selecionado?" width="200"
+                  				  showEffect="explode" hideEffect="explode"
+                  				  header="Confirmação de Deleção" severity="alert" widgetVar="confirmacaoDialog" modal="true">
+			    	<p:commandButton value="Deletar" image="ui-icon ui-icon-check" 
+			    	                 update=":formTableListaIndicadores:dataTableListaIndicadores" 
+			    					 actionListener="#{indicadorMB.deletar}" 
+    		                         oncomplete="confirmacaoDialog.hide()"/>
+		        	<p:commandButton value="Cancelar" image="ui-icon ui-icon-close" onclick="confirmacaoDialog.hide()" type="button" />
+	    	</p:confirmDialog>
+    	</h:form>
+    	<!-- SCRIPT PARA VERIFICAR SE O USUÁRIO PREENCHEU TODOS OS CAMPOS OBRIGATÓRIOS DA PÁGINA -->
+    	<script type="text/javascript">  
+		    function handleEditRequest(xhr, status, args) {  
+		        if(args.validationFailed) {  
+		            jQuery('#idDialogIndicadorEdit').parent().effect("shake", { times:3 }, 100);  
+		        } else {  
+		        	dialogIndicadorEdit.hide();    
+		        }  
+            }  
+        </script>
+	</h:body>
+</html>
