@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="ACUMAAF-SIAF" transaction-type="RESOURCE_LOCAL">
+		<class>br.ufscar.acumaaf.siaf.model.Atividadefisica</class>
+		<class>br.ufscar.acumaaf.siaf.model.Configuracaosmc</class>
+		<class>br.ufscar.acumaaf.siaf.model.Dadocriticosessao</class>
+		<class>br.ufscar.acumaaf.siaf.model.Dadoindicador</class>
+		<class>br.ufscar.acumaaf.siaf.model.Dadopadraosessao</class>
+		<class>br.ufscar.acumaaf.siaf.model.Dadosessao</class>
+		<class>br.ufscar.acumaaf.siaf.model.Diasemana</class>
+		<class>br.ufscar.acumaaf.siaf.model.Equipesaudefamilia</class>
+		<class>br.ufscar.acumaaf.siaf.model.Grupoatividadefisica</class>
+		<class>br.ufscar.acumaaf.siaf.model.Indicador</class>
+		<class>br.ufscar.acumaaf.siaf.model.Instrumentocoleta</class>
+		<class>br.ufscar.acumaaf.siaf.model.Ipaq</class>
+		<class>br.ufscar.acumaaf.siaf.model.Matriculausuariogrupoatividadefisica</class>
+		<class>br.ufscar.acumaaf.siaf.model.Msnusuario</class>
+		<class>br.ufscar.acumaaf.siaf.model.Periodicidade</class>
+		<class>br.ufscar.acumaaf.siaf.model.Presenca</class>
+		<class>br.ufscar.acumaaf.siaf.model.Sessao</class>
+		<class>br.ufscar.acumaaf.siaf.model.Unidadesaude</class>
+		<class>br.ufscar.acumaaf.siaf.model.Usuario</class>
+		<class>br.ufscar.acumaaf.siaf.model.Usuarioresponsavelgrupoatividadefisica</class>
+		<class>br.ufscar.acumaaf.siaf.model.Usuariotrabalhaequipesaudefamilia</class>
+		<class>br.ufscar.acumaaf.siaf.model.Vinculousuariounidadedesaude</class>
+		<properties>
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql:siafdb"/>
+			<property name="javax.persistence.jdbc.user" value="postgres"/>
+			<property name="javax.persistence.jdbc.password" value="postgres"/>
+			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+			<property name="eclipselink.logging.level" value="ALL"/>
+		</properties>
+	</persistence-unit>
+</persistence>

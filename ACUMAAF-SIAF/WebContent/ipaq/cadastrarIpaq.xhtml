@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<!-- FORMULÁRIO PARA CADASTRAR IPAQ -->
+				<h:form id="formCadastroIpaq">
+					<p:growl autoUpdate="true" id="growl" sticky="true"/>
+ 					<p:messages id="msgipaq" autoUpdate="true"/>
+					<p:panel header="QUESTIONÁRIO INTERNACIONAL DE ATIVIDADE FÍSICA (IPAQ) – VERSÃO CURTA"/>
+					<p:panel header="Escolher um Participante">
+						<h:panelGrid columns="6" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="Participante: *" />
+								<p:inputText id="nomeParticipante" name="nomeParticipante" value="#{ipaqMB.usuario.nome}" 
+								             required="true" requiredMessage="É necessário escolher um participante!" 
+								             style="width:200px;" onkeypress="return false;"/>
+								<h:outputLink value="javascript:void(0)" onclick="dialogIpaq.show()" title="Seleção de Participante">     
+								    <p:graphicImage value="/images/participante-icon.png" />  
+								</h:outputLink>
+								<h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+								<h:outputText value="Data: " />
+								<p:calendar value="#{ipaqMB.ipaq.data}" style="width:100px;" disabled="true" pattern="dd/MM/yyyy"/>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Considerações">
+						<h:outputText value="Nós estamos interessados em saber que tipos de atividade física as pessoas
+											fazem como parte do seu dia a dia. As perguntas estão relacionadas ao tempo que você 
+										    gastou fazendo atividade física na"/>
+						<h:outputText value=" ÚLTIMA " style="font-weight: bold;"/>
+						<h:outputFormat value=" semana. As perguntas incluem as atividades que 
+										    você faz no trabalho, para ir de um lugar a outro, por lazer, por esporte, por exercício 
+										    ou como parte das suas atividades em casa ou no jardim. Suas respostas são MUITO
+											importantes. Por favor responda cada questão mesmo que considere que não seja
+											ativo." />
+						<br />
+						<p:fieldset legend="Importante!">
+							<h:outputText value="Para responder as questões lembre que: " style="font-weight: bold;"/>
+							<br/><br/>
+							<p:graphicImage url="/images/item-icon.png" height="10"/>
+							<h:outputText value="Atividades físicas"/>
+							<h:outputText value=" VIGOROSAS "  style="font-weight:bold;"/>
+							<h:outputText value="são aquelas que precisam de um grande
+						   				         esforço físico e que fazem respirar MUITO mais forte que o normal."/>
+							<br/><br/>			   				         	
+							<p:graphicImage url="/images/item-icon.png" height="10"/>
+							<h:outputText value="Atividades físicas" />
+							<h:outputText value=" MODERADAS "  style="font-weight:bold;"/>
+							<h:outputText value="são aquelas que precisam de algum esforço
+												físico e que fazem respirar UM POUCO mais forte que o normal."/>	
+							<br/><br/>
+							<h:outputText value="Para responder as perguntas pense somente nas atividades que você realiza "/>
+							<h:outputText value="por pelo menos 10 minutos contínuos de cada vez." style="font-weight:bold;text-decoration:underline;"/>
+						</p:fieldset>										 
+					</p:panel>
+					<p:panel header="Questionário">
+						<h:outputText value="1a. " style="font-weight: bold;"/>
+						<h:outputText value="Em quantos dias da última semana você "/>
+						<h:outputText value=" CAMINHOU "  style="font-weight:bold;"/>
+						<h:outputText value="por "/>
+						<h:outputText value="pelo menos 10 minutos contínuos" style="text-decoration:underline;"/>
+						<h:outputText value=" em casa ou no trabalho, como forma de transporte para ir de um
+											 lugar para outro, por lazer, por prazer ou como forma de exercício?"/>
+						<h:panelGrid columns="5">
+							<p:inputMask mask="9" maxlength="1" size="1" value="#{ipaqMB.ipaq.caminhadadias}" label="0"
+										 required="true" requiredMessage="[Campo 1a - dias] deverá ser preenchido!"/>
+							<h:outputText value="dias por " />
+							<h:outputText value=" SEMANA." style="font-weight: bold;"/>
+							<h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+							<h:outputText value="(*) Forneça o valor 0 se a resposta for NENHUM" style="color:blue;"/>
+						</h:panelGrid>
+						<br />
+						<h:outputText value="1b. " style="font-weight: bold;"/>
+						<h:outputText value="Nos dias em que você caminhou por "/>
+						<h:outputText value="pelo menos 10 minutos contínuos" style="text-decoration:underline;"/>
+						<h:outputText value=" quanto tempo no total você gastou caminhando"/>
+						<h:outputText value=" por dia? " style="font-weight: bold;"/>
+						<h:panelGrid columns="6">
+							<p:inputText maxlength="2" size="1" value="#{ipaqMB.ipaq.caminhadahoras}" label="0"
+										 required="true" requiredMessage="[Campo 1b - horas] deverá ser preenchido!"
+										 onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;"/>
+							<h:outputText value="horas e " />
+							<p:inputText maxlength="2" size="1" value="#{ipaqMB.ipaq.caminhadaminutos}" label="0"
+										 required="true" requiredMessage="[Campo 1b - minutos] deverá ser preenchido!"
+										 onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;"/>
+							<h:outputText value="minutos " />
+							<h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+							<h:outputText value="(*) Forneça o valor 0 se a resposta for NENHUM" style="color:blue;"/>
+						</h:panelGrid>
+						<h:outputText value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" />
+						<br />
+						<h:outputText value="2a. " style="font-weight: bold;"/>
+						<h:outputText value="Em quantos dias da última semana, você realizou atividades"/>
+						<h:outputText value=" MODERADAS "  style="font-weight:bold;"/>
+						<h:outputText value="por "/>
+						<h:outputText value="pelo menos 10 minutos contínuos" style="text-decoration:underline;"/>
+						<h:outputText value=", como por exemplo pedalar leve na bicicleta, nadar, dançar, fazer ginástica aeróbica leve,
+						                     jogar vôlei recreativo, carregar pesos	leves, fazer serviços domésticos na casa, no quintal 
+						                     ou no jardim como varrer, aspirar, cuidar do jardim, ou qualquer atividade que fez aumentar "/>
+						<h:outputText value="moderadamente " style="font-weight: bold;"/>
+						<h:outputText value="sua respiração ou batimentos do coração? "/>
+						<h:outputText value=" (POR FAVOR NÃO INCLUA A CAMINHADA) " style="font-weight: bold;"/>                     
+						<h:panelGrid columns="5">
+							<p:inputMask mask="9" maxlength="1" size="1" value="#{ipaqMB.ipaq.atividademoderadadias}" label="0"
+										 required="true" requiredMessage="[Campo 2a - dias] deverá ser preenchido!"/>
+							<h:outputText value="dias por " />
+							<h:outputText value=" SEMANA." style="font-weight: bold;"/>
+							<h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+							<h:outputText value="(*) Forneça o valor 0 se a resposta for NENHUM" style="color:blue;"/>
+						</h:panelGrid>
+						<br />
+						<h:outputText value="2b. " style="font-weight: bold;"/>
+						<h:outputText value="Nos dias em que você fez essas atividades moderadas por "/>
+						<h:outputText value="pelo menos 10 minutos contínuos" style="text-decoration:underline;"/>
+						<h:outputText value=", quanto tempo no total você gastou fazendo essas atividades"/>
+						<h:outputText value=" por dia? " style="font-weight: bold;"/>
+						<h:panelGrid columns="6">
+							<p:inputText maxlength="2" size="1" value="#{ipaqMB.ipaq.atividademoderadahoras}" label="0"
+										 required="true" requiredMessage="[Campo 2b - horas] deverá ser preenchido!"
+										 onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;"/>
+							<h:outputText value="horas e " />
+							<p:inputText maxlength="2" size="1" value="#{ipaqMB.ipaq.atividademoderadaminutos}" label="0"
+							 			 required="true" requiredMessage="[Campo 2b - minutos] deverá ser preenchido!"
+							 			 onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;"/>
+							<h:outputText value="minutos " />
+							<h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+							<h:outputText value="(*) Forneça o valor 0 se a resposta for NENHUM" style="color:blue;"/>
+						</h:panelGrid>
+						<h:outputText value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" />
+						<br />
+						<h:outputText value="3a. " style="font-weight: bold;"/>
+						<h:outputText value="Em quantos dias da última semana, você realizou atividades"/>
+						<h:outputText value=" VIGOROSAS "  style="font-weight:bold;"/>
+						<h:outputText value="por "/>
+						<h:outputText value="pelo menos 10 minutos contínuos" style="text-decoration:underline;"/>
+						<h:outputText value=", como por exemplo correr, fazer ginástica
+												aeróbica, jogar futebol, pedalar rápido na bicicleta, jogar basquete, fazer serviços
+												domésticos pesados em casa, no quintal ou cavoucar no jardim, carregar pesos
+												elevados ou qualquer atividade que fez aumentar "/>
+						<h:outputText value="MUITO " style="font-weight: bold;"/>
+						<h:outputText value="sua respiração ou batimentos do coração? "/>
+						<h:panelGrid columns="5">
+							<p:inputMask mask="9" maxlength="1" size="1" value="#{ipaqMB.ipaq.atividadevigorosadias}" label="0"
+										 required="true" requiredMessage="[Campo 3a - dias] deverá ser preenchido!"/>
+							<h:outputText value="dias por " />
+							<h:outputText value=" SEMANA." style="font-weight: bold;"/>
+							<h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+							<h:outputText value="(*) Forneça o valor 0 se a resposta for NENHUM" style="color:blue;"/>
+						</h:panelGrid>
+						<br />
+						<h:outputText value="3b. " style="font-weight: bold;"/>
+						<h:outputText value="Nos dias em que você fez essas atividades vigorosas por "/>
+						<h:outputText value="pelo menos 10 minutos contínuos" style="text-decoration:underline;"/>
+						<h:outputText value=", quanto tempo no total você gastou fazendo essas atividades"/>
+						<h:outputText value=" por dia? " style="font-weight: bold;"/>
+						<h:panelGrid columns="6">
+							<p:inputText maxlength="2" size="1" value="#{ipaqMB.ipaq.atividadevigorosahoras}" label="0"
+										 required="true" requiredMessage="[Campo 3b - horas] deverá ser preenchido!"
+										 onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;"/>
+							<h:outputText value="horas e " />
+							<p:inputText maxlength="2" size="1" value="#{ipaqMB.ipaq.atividadevigorosaminutos}" label="0"
+										 required="true" requiredMessage="[Campo 3b - minutos] deverá ser preenchido!"
+										 onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;"/>
+							<h:outputText value="minutos " />
+							<h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+							<h:outputText value="(*) Forneça o valor 0 se a resposta for NENHUM" style="color:blue;"/>
+						</h:panelGrid>
+						<h:outputText value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" />
+						<br />
+						<h:outputText value="Estas últimas questões são sobre o tempo que você permanece sentado todo dia,
+												 no trabalho, na escola ou faculdade, em casa e durante seu tempo livre. Isto inclui
+											 o tempo sentado estudando, sentado enquanto descansa, fazendo lição de casa
+											 visitando um amigo, lendo, sentado ou deitado assistindo TV. Não inclua o tempo
+											 gasto sentando durante o transporte em ônibus, trem, metrô ou carro."/>
+						<br /><br />
+						<h:outputText value="4a. " style="font-weight: bold;"/>
+						<h:outputText value="Quanto tempo no total você gasta sentado durante um "/>
+						<h:outputText value=" dia de semana"  style="font-weight:bold;"/>
+						<h:outputText value="? "/>
+						<h:panelGrid columns="6">
+							<p:inputText maxlength="2" size="1" value="#{ipaqMB.ipaq.temposentadodiahoras}"
+										 required="true" requiredMessage="[Campo 4a - horas] deverá ser preenchido!"
+										 onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;"/>
+							<h:outputText value="horas e " />
+							<p:inputText maxlength="2" mask="99" size="1" value="#{ipaqMB.ipaq.temposentadodiaminutos}"
+										 required="true" requiredMessage="[Campo 4a - minutos] deverá ser preenchido!"
+										 onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;"/>
+							<h:outputText value="minutos " />
+							<h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+							<h:outputText value="(*) Forneça o valor 0 se a resposta for NENHUM" style="color:blue;"/>
+						</h:panelGrid>
+						<br />
+						<h:outputText value="4b. " style="font-weight: bold;"/>
+						<h:outputText value="Quanto tempo no total você gasta sentado durante um "/>
+						<h:outputText value=" dia de final de semana"  style="font-weight:bold;"/>
+						<h:outputText value="? "/>
+						<h:panelGrid columns="6">
+							<p:inputText maxlength="2" size="1" value="#{ipaqMB.ipaq.temposentadofimsemanahoras}" label="0"
+										 required="true" requiredMessage="[Campo 4b - horas] deverá ser preenchido!"
+										 onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;"/>
+							<h:outputText value="horas e " />
+							<p:inputText maxlength="2" size="1" value="#{ipaqMB.ipaq.temposentadofimsemanaminutos}" label="0"
+										 required="true" requiredMessage="[Campo 4b - minutos] deverá ser preenchido!"
+										 onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;"/>
+							<h:outputText value="minutos " />
+							<h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
+							<h:outputText value="(*) Forneça o valor 0 se a resposta for NENHUM" style="color:blue;"/>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Observações">
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Observação: " />
+								<p:inputTextarea value="#{ipaqMB.ipaq.observacao}" style="width:300px; height: 60px;" effectDuration="400"/>	
+						</h:panelGrid>
+					</p:panel>
+			 		<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+						<h:outputText value="* Campos Obrigatórios!"/> <br/><br/>
+						<p:commandButton value="Registrar" action="#{ipaqMB.cadastrarIpaq}" update="growl,msgipaq" image="ui-icon ui-icon-pencil" ajax="false"/>			
+					</h:panelGrid>
+				</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formIpaq">
+    		<!-- DIALOG PARA SELEÇÃO DE USUÁRIOS -->
+    		<p:dialog header="Seleção do Participante" widgetVar="dialogIpaq" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogipaq" closable="true" modal="true">
+				<p:dataTable id="dataTableIpaq" var="participante" 
+					             value="#{ipaqMB.listaUsuarios}" paginator="true" rows="10">s
+				       		<f:facet name="header">
+				           		Lista de Participantes cadastrados
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{participante.codigousuario}" />
+				       		</p:column>
+				               <p:column sortBy="#{participante.nome}" filterBy="#{participante.nome}" style="width:100px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome" />
+				           		</f:facet>
+				           		<h:outputText value="#{participante.nome}" />
+				       		</p:column>
+					        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+					        	<p:commandButton title="Selecionar" value="Selecionar" update=":formCadastroIpaq:nomeParticipante" 
+					        	                 image="ui-icon ui-icon-search" oncomplete="dialogIpaq.hide()">
+				       				<f:setPropertyActionListener target="#{ipaqMB.usuario}" value="#{participante}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+			</p:dialog>
+    	</h:form>	        
+ 	</h:body>
+</html>

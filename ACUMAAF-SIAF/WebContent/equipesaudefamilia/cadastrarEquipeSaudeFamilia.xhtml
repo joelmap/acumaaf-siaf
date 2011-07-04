@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<!-- FORMULÁRIO PARA CADASTRAR EQUIPE DE SAÚDE DA FAMÍLIA-->
+				<h:form id="formVinculoEquipeSaudeFamiliaUnidadeSaude">
+					<p:growl autoUpdate="true" id="growl" sticky="true"/>
+ 					<p:messages autoUpdate="true"/>
+						<p:panel header="Dados da Equipe de Saúde da Família">
+							<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Nome...................: *" />
+									<p:inputText maxlength="50" value="#{equipesaudefamiliaMB.equipeSaudeFamilia.nome}" required="true" requiredMessage="[Nome] O campo NOME deverá ser preenchido" style="width:200px"/>
+							</h:panelGrid>
+						</p:panel>
+						<p:panel header="Dados da Unidade de Saúde">
+							<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Unidade de Saúde: *" />
+								<p:inputText id="nomeUnidadeSaude" name="nomeUnidadeSaude" value="#{equipesaudefamiliaMB.unidadeSaude.nome}" 
+								             required="true" requiredMessage="É necessário escolher uma Unidade de Saúde!" 
+								             style="width:200px;" onkeypress="return false;" />
+								<h:outputLink value="javascript:void(0)" onclick="dialogVinculoEquipeSaudeFamiliaUnidadeSaude.show()" title="Seleção de Unidade de Saúde">     
+								    <p:graphicImage value="/images/unidadesaude-mini-icon.png" />  
+								</h:outputLink>
+							</h:panelGrid>
+						</p:panel>
+						<p:panel header="Observações">
+							<h:panelGrid columns="2" columnClasses="label, value">
+								<h:outputText value="Observação: " />
+									<p:inputTextarea maxlength="300" value="#{equipesaudefamiliaMB.equipeSaudeFamilia.descricao}" style="width:300px; height: 60px;" effectDuration="400"/>	
+							</h:panelGrid>
+						</p:panel>
+				 		<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="* Campos Obrigatórios!"/> <br/><br/>
+							<p:commandButton value="Cadastrar" action="#{equipesaudefamiliaMB.cadastrarEquipeSaudeFamilia}" image="ui-icon ui-icon-pencil" update="growl" ajax="false"/>			
+						</h:panelGrid>
+				</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formDialogsVinculoEquipeSaudeFamiliaUnidadeSaude">
+    		<!-- DIALOG PARA SELEÇÃO DE UNIDADE DE SAÚDE -->
+    		<p:dialog header="Seleção de uma Unidade de Saúde" widgetVar="dialogVinculoEquipeSaudeFamiliaUnidadeSaude" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogVinculoUsuarioUnidadeSaudeUnidadeSaude" closable="true" modal="true">
+				<p:dataTable id="dataTableVinculoEquipeSaudeFamiliaUnidadeSaude" var="unidadeSaude" 
+					             value="#{equipesaudefamiliaMB.listaUnidadesSaude}" paginator="true" rows="10">s
+				       		<f:facet name="header">
+				           		Lista de Unidades de Saúde
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{unidadeSaude.codigounidadesaude}" />
+				       		</p:column>
+				               <p:column sortBy="#{unidadeSaude.nome}" filterBy="#{unidadeSaude.nome}" style="width:100px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome" />
+				           		</f:facet>
+				           		<h:outputText value="#{unidadeSaude.nome}" />
+				       		</p:column>
+					        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+					        	<p:commandButton title="Selecionar" value="Selecionar" update=":formVinculoEquipeSaudeFamiliaUnidadeSaude:nomeUnidadeSaude" 
+					        	                 image="ui-icon ui-icon-search" oncomplete="dialogVinculoEquipeSaudeFamiliaUnidadeSaude.hide()">
+				       				<f:setPropertyActionListener target="#{equipesaudefamiliaMB.unidadeSaude}" value="#{unidadeSaude}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+			</p:dialog>
+    	</h:form>
+ 	</h:body>
+</html>	

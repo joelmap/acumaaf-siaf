@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<!-- TABELA COM OS REGISTROS DE VINCULOS ENTRE USUÁRIOS E EQUIPE DE SAÚDE DA FAMÍLIA -->
+       			<h:form id="formTableListaVinculos">
+       				<p:dataTable id="dataTableListaVinculos" var="vinculo" 
+					             value="#{usuariotrabalhaequipesaudefamiliaMB.listaUsuarioTrabalhaEquipeSaudeFamilia}" paginator="true" rows="10">
+				       		<f:facet name="header">
+				           		Lista de Registros dos vínculos entre Profissionais de Saúde e Equipes de Saúde da Família
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{vinculo.codigousuariotrabalhaequipesaudefamilia}" />
+				       		</p:column>
+				       		<p:column sortBy="#{vinculo.usuario.nome}" filterBy="#{vinculo.usuario.nome}" >
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome do Profissional de Saúde" />
+				           		</f:facet>
+				           		<h:outputText value="#{vinculo.usuario.nome}" />
+				       		</p:column>
+				            <p:column sortBy="#{vinculo.equipesaudefamilia.nome}" filterBy="#{vinculo.equipesaudefamilia.nome}" style="text-align:center;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome da Equipe de Saúde da Família" />
+				           		</f:facet>
+				           		<h:outputText value="#{vinculo.equipesaudefamilia.nome}" />
+				       		</p:column>
+				       		<p:column headerText="Ação" style="text-align:center;" >
+					        	<p:commandButton title="Visualizar" value="Visualizar" update=":formDialogListaVinculoUsuarioEquipeSaudeFamilia:displayView" image="ui-icon ui-icon-search" 
+					        	                 oncomplete="dialogVinculoUsuarioEquipeSaudeFamilia.show()">
+				       				<f:setPropertyActionListener target="#{usuariotrabalhaequipesaudefamiliaMB.usuarioTrabalhaEquipeSaudeSelecionado}" value="#{vinculo}" />
+				       			</p:commandButton>
+					       		<p:commandButton title="Deletar" value="Deletar" 
+					        	                 image="ui-icon ui-icon-close" oncomplete="confirmacaoDialog.show()">
+					       				<f:setPropertyActionListener target="#{usuariotrabalhaequipesaudefamiliaMB.usuarioTrabalhaEquipeSaudeSelecionado}" value="#{vinculo}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+				</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formDialogListaVinculoUsuarioEquipeSaudeFamilia">
+    		<!-- DIALOG PARA VISUALIZAÇÃO DE DETALHES DE UM DETERMINADO REGISTRO DE VÍNCULO DE USUÁRIO E EQUIPE DE SAÚDE DA FAMÍLIA SELECIONADO PELO USUÁRIO -->
+    		 <p:dialog header="Detalhes do vínculo entre Profissional e Equipe de Saúde da Família" widgetVar="dialogVinculoUsuarioEquipeSaudeFamilia" resizable="false"
+					   width="400" showEffect="explode" hideEffect="explode" modal="true">
+				<h:panelGrid id="displayView" cellpadding="4" style="margin-left: auto; margin-right: auto;">
+					<p:panel style="width:150px; height: 150px;border:none;margin-left: auto; margin-right: auto;">
+					 	<p:graphicImage url="/images/profissional-saude-icon.png"/>
+					</p:panel>
+					<p:panel header="Equipe de Saúde da Família">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<!-- Input para selecionar a Equipe de Saúde da Família a qual deseja vincular o usuário profissional de Saúde-->
+							<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Equipe de Saúde da Família: *" />
+								<h:outputText value="#{usuariotrabalhaequipesaudefamiliaMB.usuarioTrabalhaEquipeSaudeSelecionado.equipesaudefamilia.nome}" style="color:blue;"/>
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Profissional de Saúde">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<!-- Input para selecionar o usuário que deseja vincular a determinada unidade de saúde -->
+							<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Profissional de Saúde..........: *" />
+								<h:outputText value="#{usuariotrabalhaequipesaudefamiliaMB.usuarioTrabalhaEquipeSaudeSelecionado.usuario.nome}" style="color:blue;"/>
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Dados do Cargo do Profissional de Saúde">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="Nome do cargo:.....................:*" />
+								<h:outputText maxlength="50" value="#{usuariotrabalhaequipesaudefamiliaMB.usuarioTrabalhaEquipeSaudeSelecionado.nomecargo}" style="color:blue;"/>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Observações">
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Observação...........................: " />
+								<h:outputText value="#{usuariotrabalhaequipesaudefamiliaMB.usuarioTrabalhaEquipeSaudeSelecionado.observacao}" style="color:blue;"/>	
+						</h:panelGrid>
+					</p:panel>		        	
+	            </h:panelGrid>
+			</p:dialog>
+			<!-- DIALOG CONFIRMAÇÃO DA DELEÇÃO -->
+			<p:confirmDialog message="Deseja realmente deletar o registro selecionado?" width="200"
+                  				  showEffect="explode" hideEffect="explode"
+                  				  header="Confirmação de Deleção" severity="alert" widgetVar="confirmacaoDialog" modal="true">
+			    	<p:commandButton value="Deletar" image="ui-icon ui-icon-check" 
+			    	                 update=":formTableListaVinculos:dataTableListaVinculos" 
+			    					 actionListener="#{usuariotrabalhaequipesaudefamiliaMB.deletar}" 
+    		                         oncomplete="confirmacaoDialog.hide()"/>
+		        	<p:commandButton value="Cancelar" image="ui-icon ui-icon-close" onclick="confirmacaoDialog.hide()" type="button" />
+	    	</p:confirmDialog>
+    	</h:form>
+	</h:body>
+</html>

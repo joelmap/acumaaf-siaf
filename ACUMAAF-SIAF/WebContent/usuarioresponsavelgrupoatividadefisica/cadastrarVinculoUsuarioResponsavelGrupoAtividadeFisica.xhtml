@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<h:form id="formVinculoUsuarioResponsavelGrupoAtividadeFisica">
+       				<p:growl autoUpdate="true" id="growl" sticky="true"/>
+ 					<p:messages id="msgvinculoUsuarioResponsavelGrupoAtividadeFisica" autoUpdate="true"/>
+					<p:panel header="Selecione um Grupo de Atividade Física">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<!-- Input para selecionar um Grupo de Atividade Física ao qual deseja-se vincular o usuário profissional de Saúde responsável-->
+							<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Grupo de Atividade Física: *" />
+								<p:inputText id="nomeGrupoAtividadeFisica" name="nomeGrupoAtividadeFisica" value="#{usuarioresponsavelgrupoatividadefisicaMB.grupoAtividadeFisica.nome}" 
+								             required="true" requiredMessage="[Atenção!] É necessário escolher um Grupo de Atividade Física!" 
+								             style="width:200px;" onkeypress="return false;"/>
+								<h:outputLink value="javascript:void(0)" onclick="dialogVinculoUsuarioResponsavelGrupoAtividadeFisicaGrupoAtividadeFisica.show()" title="Seleção de Grupo de Atividade Física">     
+								    <p:graphicImage value="/images/user-group-mini-icon.png" />  
+								</h:outputLink>
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Selecione um Profissional de Saúde Responsável">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<!-- Input para selecionar o profissional que deseja vincular como responsável de determinado grupo de atividade física -->
+							<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Profissional de Saúde........: *" />
+								<p:inputText id="nomeProfissionalSaude" name="nomeProfissionalSaude" value="#{usuarioresponsavelgrupoatividadefisicaMB.usuario.nome}" 
+								             required="true" requiredMessage="[Atenção!] É necessário escolher um Profissional de Saúde!" 
+								             style="width:200px;" onkeypress="return false;"/>
+								<h:outputLink value="javascript:void(0)" onclick="dialogVinculoUsuarioResponsavelGrupoAtividadeFisicaUsuario.show()" title="Seleção de Profissional de Saúde">     
+								    <p:graphicImage value="/images/profissional-saude-mini-icon.png" />  
+								</h:outputLink>
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Observações">
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Observação..........................: " />
+								<p:inputTextarea maxlength="300" value="#{usuarioresponsavelgrupoatividadefisicaMB.usuarioResponsavelGrupoAtividadeFisica.observacao}" style="width:300px; height: 60px;" effectDuration="400"/>	
+						</h:panelGrid>
+					</p:panel>
+					<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid" style="border:none;">
+						<h:outputText value="* Campos Obrigatórios!"/> <br/><br/>
+						<p:commandButton action="#{usuarioresponsavelgrupoatividadefisicaMB.cadastrarUsuarioResponsavelGrupoAtividadeFisica}"  image="ui-icon ui-icon-pencil" 
+						                 value="Cadastrar Responsável" update="msgvinculoUsuarioResponsavelGrupoAtividadeFisica,growl" ajax="false"/>
+					</h:panelGrid>
+				</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formDialogsVinculoUsuarioResponsavelGrupoAtividadeFisica">
+    		<!-- DIALOG PARA SELEÇÃO DE USUÁRIOS -->
+    		<p:dialog header="Seleção do Profissional de Saúde" widgetVar="dialogVinculoUsuarioResponsavelGrupoAtividadeFisicaUsuario" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogVinculoUsuarioUnidadeSaudeUsuario" closable="true" modal="true">
+				<p:dataTable id="dataTableVinculoUsuarioResponsavelGrupoAtividadeFisicaUsuario" var="profissionalSaude" 
+					             value="#{usuarioresponsavelgrupoatividadefisicaMB.listaUsuarios}" paginator="true" rows="10">
+				       		<f:facet name="header">
+				           		Lista de Profissionais de Saúde cadastrados
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{profissionalSaude.codigousuario}" />
+				       		</p:column>
+				               <p:column sortBy="#{profissionalSaude.nome}" filterBy="#{profissionalSaude.nome}" style="width:100px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome" />
+				           		</f:facet>
+				           		<h:outputText value="#{profissionalSaude.nome}" />
+				       		</p:column>
+					        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+					        	<p:commandButton title="Selecionar" value="Selecionar" update=":formVinculoUsuarioResponsavelGrupoAtividadeFisica:nomeProfissionalSaude" 
+					        	                 image="ui-icon ui-icon-search" oncomplete="dialogVinculoUsuarioResponsavelGrupoAtividadeFisicaUsuario.hide()">
+				       				<f:setPropertyActionListener target="#{usuarioresponsavelgrupoatividadefisicaMB.usuario}" value="#{profissionalSaude}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+			</p:dialog>
+			<!-- DIALOG PARA SELEÇÃO DE GRUPO DE ATIVIDADE FÍSICA -->
+    		<p:dialog header="Seleção de um Grupo de Atividade Física" widgetVar="dialogVinculoUsuarioResponsavelGrupoAtividadeFisicaGrupoAtividadeFisica" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogVinculoUsuarioEquipeSaudeFamiliaEquipeSaudeFamilia" closable="true" modal="true">
+				<p:dataTable id="dataTableVinculoUsuarioResponsavelGrupoAtividadeFisicaGrupoAtividadeFisica" var="grupoAtividadeFisica" 
+					             value="#{usuarioresponsavelgrupoatividadefisicaMB.listaGrupoAtividadeFisica}" paginator="true" rows="10">
+				       		<f:facet name="header">
+				           		Lista de Grupos de Atividade Física
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{grupoAtividadeFisica.codigogrupoatividadefisica}" />
+				       		</p:column>
+				               <p:column sortBy="#{grupoAtividadeFisica.nome}" filterBy="#{grupoAtividadeFisica.nome}" style="width:100px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome" />
+				           		</f:facet>
+				           		<h:outputText value="#{grupoAtividadeFisica.nome}" />
+				       		</p:column>
+					        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+					        	<p:commandButton title="Selecionar" value="Selecionar" update=":formVinculoUsuarioResponsavelGrupoAtividadeFisica:nomeGrupoAtividadeFisica" 
+					        	                 image="ui-icon ui-icon-search" oncomplete="dialogVinculoUsuarioResponsavelGrupoAtividadeFisicaGrupoAtividadeFisica.hide()">
+				       				<f:setPropertyActionListener target="#{usuarioresponsavelgrupoatividadefisicaMB.grupoAtividadeFisica}" value="#{grupoAtividadeFisica}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+			</p:dialog>
+    	</h:form>
+	</h:body>
+</html>

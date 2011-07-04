@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<h:form id="formVinculoUsuarioEquipeSaudeFamilia">
+       				<p:growl autoUpdate="true" id="growl" sticky="true"/>
+ 					<p:messages id="msgvinculoUsuarioEquipeSaudeFamilia" autoUpdate="true"/>
+					<p:panel header="Selecione uma Equipe de Saúde da Família">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<!-- Input para selecionar a Equipe de Saúde da Família a qual deseja vincular o usuário profissional de Saúde-->
+							<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Equipe de Saúde da Família: *" />
+								<p:inputText id="nomeEquipeSaudeFamilia" name="nomeEquipeSaudeFamilia" value="#{usuariotrabalhaequipesaudefamiliaMB.equipeSaudeFamilia.nome}" 
+								             required="true" requiredMessage="[Atenção!] É necessário escolher uma Equipe de Saúde da Família!" 
+								             style="width:200px;" onkeypress="return false;"/>
+								<h:outputLink value="javascript:void(0)" onclick="dialogVinculoUsuarioEquipeSaudeFamiliaEquipeSaudeFamilia.show()" title="Seleção de Equipe de Saúde da Família">     
+								    <p:graphicImage value="/images/equipe-saude-familia-mini-icon.png" />  
+								</h:outputLink>
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Selecione um Profissional de Saúde">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<!-- Input para selecionar o usuário que deseja vincular a determinada unidade de saúde -->
+							<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Profissional de Saúde..........: *" />
+								<p:inputText id="nomeProfissionalSaude" name="nomeProfissionalSaude" value="#{usuariotrabalhaequipesaudefamiliaMB.usuario.nome}" 
+								             required="true" requiredMessage="[Atenção] É necessário escolher um Profissional de Saúde!" 
+								             style="width:200px;" onkeypress="return false;"/>
+								<h:outputLink value="javascript:void(0)" onclick="dialogVinculoUsuarioEquipeSaudeFamiliaUsuario.show()" title="Seleção de Profissional de Saúde">     
+								    <p:graphicImage value="/images/profissional-saude-mini-icon.png" />  
+								</h:outputLink>
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Dados do Cargo do Profissional de Saúde">
+							<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+								<h:outputText value="Nome do cargo:.....................:*" />
+									<p:inputText maxlength="50" value="#{usuariotrabalhaequipesaudefamiliaMB.usuarioTrabalhaEquipeSaudeFamilia.nomecargo}" required="true" requiredMessage="[Nome do Cargo] O campo NOME DO CARGO deverá ser preenchido" style="width:200px"/>
+							</h:panelGrid>
+						</p:panel>
+						<p:panel header="Observações">
+							<h:panelGrid columns="2" columnClasses="label, value">
+								<h:outputText value="Observação...........................: " />
+									<p:inputTextarea maxlength="300" value="#{usuariotrabalhaequipesaudefamiliaMB.usuarioTrabalhaEquipeSaudeFamilia.observacao}" style="width:300px; height: 60px;" effectDuration="400"/>	
+							</h:panelGrid>
+						</p:panel>
+					<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid" style="border:none;">
+						<h:outputText value="* Campos Obrigatórios!"/> <br/><br/>
+						<p:commandButton action="#{usuariotrabalhaequipesaudefamiliaMB.cadastrarVinculoProfissionalEquipeSaudeFamilia}"  image="ui-icon ui-icon-pencil" 
+						                 value="Cadastrar Vínculo" update="msgvinculoUsuarioEquipeSaudeFamilia,growl" ajax="false"/>
+					</h:panelGrid>
+				</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formDialogsVinculoUsuarioUnidadeSaude">
+    		<!-- DIALOG PARA SELEÇÃO DE USUÁRIOS -->
+    		<p:dialog header="Seleção do Profissional de Saúde" widgetVar="dialogVinculoUsuarioEquipeSaudeFamiliaUsuario" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogVinculoUsuarioUnidadeSaudeUsuario" closable="true" modal="true">
+				<p:dataTable id="dataTableVinculoUsuarioEquipeSaudeFamiliaUsuario" var="profissionalSaude" 
+					             value="#{usuariotrabalhaequipesaudefamiliaMB.listaUsuarios}" paginator="true" rows="10">
+				       		<f:facet name="header">
+				           		Lista de Profissionais de Saúde cadastrados
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{profissionalSaude.codigousuario}" />
+				       		</p:column>
+				               <p:column sortBy="#{profissionalSaude.nome}" filterBy="#{profissionalSaude.nome}" style="width:100px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome" />
+				           		</f:facet>
+				           		<h:outputText value="#{profissionalSaude.nome}" />
+				       		</p:column>
+					        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+					        	<p:commandButton title="Selecionar" value="Selecionar" update=":formVinculoUsuarioEquipeSaudeFamilia:nomeProfissionalSaude" 
+					        	                 image="ui-icon ui-icon-search" oncomplete="dialogVinculoUsuarioEquipeSaudeFamiliaUsuario.hide()">
+				       				<f:setPropertyActionListener target="#{usuariotrabalhaequipesaudefamiliaMB.usuario}" value="#{profissionalSaude}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+			</p:dialog>
+			<!-- DIALOG PARA SELEÇÃO DE EQUIPE DE SAÚDE DA FAMÍLIA -->
+    		<p:dialog header="Seleção de uma Equipe de Saúde da Família" widgetVar="dialogVinculoUsuarioEquipeSaudeFamiliaEquipeSaudeFamilia" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogVinculoUsuarioEquipeSaudeFamiliaEquipeSaudeFamilia" closable="true" modal="true">
+				<p:dataTable id="dataTableVinculoUsuarioEquipeSaudeFamiliaEquipeSaudeFamilia" var="equipeSaudeFamilia" 
+					             value="#{usuariotrabalhaequipesaudefamiliaMB.listaEquipesSaudeFamilia}" paginator="true" rows="10">
+				       		<f:facet name="header">
+				           		Lista de Equipes de Saúde da Família
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{equipeSaudeFamilia.codigoequipesaudefamilia}" />
+				       		</p:column>
+				               <p:column sortBy="#{equipeSaudeFamilia.nome}" filterBy="#{equipeSaudeFamilia.nome}" style="width:100px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome" />
+				           		</f:facet>
+				           		<h:outputText value="#{equipeSaudeFamilia.nome}" />
+				       		</p:column>
+					        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+					        	<p:commandButton title="Selecionar" value="Selecionar" update=":formVinculoUsuarioEquipeSaudeFamilia:nomeEquipeSaudeFamilia" 
+					        	                 image="ui-icon ui-icon-search" oncomplete="dialogVinculoUsuarioEquipeSaudeFamiliaEquipeSaudeFamilia.hide()">
+				       				<f:setPropertyActionListener target="#{usuariotrabalhaequipesaudefamiliaMB.equipeSaudeFamilia}" value="#{equipeSaudeFamilia}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+			</p:dialog>
+    	</h:form>
+	</h:body>
+</html>

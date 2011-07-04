@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+    	<title>
+        	<ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>         
+	</h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+					<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+				</h:panelGrid>
+				<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+					<h:outputText value="SISTEMA DE INFORMAÇÃO DE ATIVIDADE FÍSICA" style="font-size: 30px;"/>
+				</h:panelGrid>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" resizable="false" width="250">
+<!--         		<ui:include src="/componentes/layout_esquerdo.xhtml" /> -->
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO DIREITO DA PÁGINA -->
+       		<p:layoutUnit position="right" resizable="false" width="250">
+<!--         		<ui:include src="/componentes/layout_direito.xhtml" /> -->
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="false"  scrollable="false" width="250" >
+				<h:form>
+					<h:panelGrid style="margin-left: auto; margin-right: auto;">
+						<p:panel header="Tela de Autenticação">
+							<p:messages autoUpdate="true" id="msgLogin"/>
+							<p:growl id="growl" autoUpdate="true" sticky="true"/>
+							<h:panelGrid columns="2" id="grid">
+								<h:outputText value="Usuário: " />
+									<p:inputText id="usuario" value="#{loginusuarioMB.usuario.usuario}" required="true" requiredMessage="[Usuário] O campo USUÁRIO deverá ser preenchido!"/>
+								<h:outputText value="Senha: " />
+									<p:password id="senha" value="#{loginusuarioMB.usuario.senha}" required="true" requiredMessage="[Senha] O campo SENHA deverá ser preenchido!" feedback="false"/>
+							</h:panelGrid>
+							<h:panelGrid style="margin-left: auto; margin-right: auto;">
+								<p:commandButton action="#{loginusuarioMB.autentica}" value="Acessar"  update="msgLogin,growl"  ajax="false"/>
+							</h:panelGrid>
+						</p:panel>
+					</h:panelGrid>
+				</h:form>
+         	</p:layoutUnit>
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape_login.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+	</h:body>
+</html>

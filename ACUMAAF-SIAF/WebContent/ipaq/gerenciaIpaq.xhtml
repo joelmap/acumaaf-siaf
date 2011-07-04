@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário  e Programações" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO DIREITO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Galeria de Imagens" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<!-- SUB-MENU CENTRAL DA PÁGINA -->
+       			<h:form>
+	       			<h:panelGrid columns="2" style="margin-left: auto; margin-right: auto;">
+	     				<h:panelGrid>
+	      					<p:panel style="width:200px; height: 250px; border:none;margin-left: auto; margin-right: auto;text-algin:center" 
+	      					         header="Preencher IPAQ" >
+	      						<p:commandLink action="#{ipaqMB.chamaPaginaCadastrarIpaq}">
+	      							<p:graphicImage alt="Preencher IPAQ" url="/images/ipaq-cad-icon.png" 
+	      											title="Preencher IPAQ" onmouseover="this.width=180;this.height=180;" 
+	      											onmouseout="this.width=140;this.height=140;" 
+	      											style="margin-left: auto; margin-right: auto;"/>
+	      							</p:commandLink>				
+	      					</p:panel>
+	      				</h:panelGrid>
+	      				<h:panelGrid>
+	      					<p:panel style="width:200px; height: 250px; border:none;margin-left: auto; margin-right: auto;text-algin:center" 
+	      					         header="Listar registros do IPAQ" >
+	      						<p:commandLink action="#{ipaqMB.chamaPaginaListarIpaqs}">
+	      							<p:graphicImage alt="Listar registros do IPAQ" url="/images/lista-icon.png" 
+	      							                title="Listar registros do IPAQ" onmouseover="this.width=180;this.height=180;" 
+	      							                onmouseout="this.width=140;this.height=140;" style="margin-left: auto; 
+	      							                margin-right: auto;"/>
+	      						</p:commandLink>	
+	      					</p:panel>
+	      				</h:panelGrid>
+	       			</h:panelGrid>
+       			</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+	</h:body>
+</html>

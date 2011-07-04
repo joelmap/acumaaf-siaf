@@ -1,0 +1,433 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<!-- FORMULÁRIO PARA CADASTRAR GRUPO DE ATIVIDADE FISICA -->
+				<h:form id="formCadastroGrupoAtividadeFisica">
+					<p:growl autoUpdate="true" id="growl" sticky="true"/>
+ 					<p:messages autoUpdate="true"/>
+ 					<p:panel header="Dados para o cadastro do Grupo de Atividade Física">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="Nome do Grupo...: *" />
+								<p:inputText maxlength="50" value="#{grupoatividadefisicaMB.grupoAtividadeFisica.nome}" required="true" requiredMessage="[Nome] O campo NOME deverá ser preenchido" style="width:300px"/>
+						</h:panelGrid>
+					</p:panel>
+ 					<p:panel header="Vinculando uma Unidade de Saúde e uma Equipe de Saúde da Família ao Grupo de Atividade Física">
+ 						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid" style="margin-left: auto; margin-right: auto;text-algin:center">
+ 							<p:panel header="Selecione uma Unidade de Saúde">
+ 								<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+									<h:outputText value="*" style="color:red;"/>
+									<p:inputText id="nomeUnidadeSaude" name="nomeUnidadeSaude" value="#{grupoatividadefisicaMB.unidadeSaude.nome}" 
+									             required="true" requiredMessage="[Nome da Unidade de Saúde] É necessário escolher uma Unidade de Saúde!" 
+									             style="width:250px;" onkeypress="return false;"/>
+									<h:outputLink value="javascript:void(0)" onclick="dialogSelecaoUnidadeSaude.show()" title="Seleção de Unidade de Saúde">     
+									    <p:graphicImage value="/images/unidadesaude-mini-icon.png" />  
+									</h:outputLink>
+								</h:panelGrid>
+ 							</p:panel>
+ 							<p:panel header="Selecione uma Equipe de Saúde da Família">
+ 								<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+									<h:outputText value="*" style="color:red;"/>
+										<p:inputText id="nomeEquipeSaudeFamilia" name="nomeEquipeSaudeFamilia" value="#{grupoatividadefisicaMB.equipeSaudeFamilia.nome}" 
+										             required="true" requiredMessage="[Nome da Equipe de Saúde da Família] É necessário escolher uma Equipe de Saúde da Família!" 
+										             style="width:250px;" onkeypress="return false;"/>
+									<h:outputLink value="javascript:void(0)" onclick="dialogSelecaoEquipeSaudeFamilia.show()" title="Seleção de Equipe de Saúde da Família">     
+									    <p:graphicImage value="/images/equipe-saude-familia-mini-icon.png" />  
+									</h:outputLink>
+								</h:panelGrid>
+ 							</p:panel>
+ 						</h:panelGrid>
+					</p:panel>
+ 					<p:panel header="Vinculando uma Atividade Física e uma Periodicidade para o Grupo de Atividade Física">
+ 						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid" style="margin-left: auto; margin-right: auto;text-algin:center">
+ 							<p:panel header="Selecione uma Atividade Física">
+ 								<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+									<h:outputText value="*" style="color:red;"/>
+									<p:inputText id="nomeAtividadeFisica" name="nomeAtividadeFisica" value="#{grupoatividadefisicaMB.atividadeFisica.nome}" 
+									             required="true" requiredMessage="[Nome da Atividade Física] É necessário escolher uma Atividade Física!" 
+									             style="width:250px;" onkeypress="return false;"/>
+									<h:outputLink value="javascript:void(0)" onclick="dialogSelecaoAtividadeFisica.show()" title="Seleção de Atividade Física">     
+									    <p:graphicImage value="/images/atividadefisica-mini-icon.png" />  
+									</h:outputLink>
+								</h:panelGrid>
+ 							</p:panel>
+ 							<p:panel header="Selecione uma Periodicidade de realização das Atividades">
+ 								<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid">
+									<h:outputText value="*" style="color:red;"/>
+										<p:inputText id="nomePeriodicidade" name="nomePeriodicidade" value="#{grupoatividadefisicaMB.periodicidade.nome}" 
+										             required="true" requiredMessage="[Periodicidade] É necessário escolher uma Periodicidade para o Grupo!" 
+										             style="width:250px;" onkeypress="return false;"/>
+									<h:outputLink value="javascript:void(0)" onclick="dialogSelecaoPeriodicidade.show()" title="Seleção de Periodicidade para o Grupo">     
+									    <p:graphicImage value="/images/periodicidade-mini-icon.png" />  
+									</h:outputLink>
+								</h:panelGrid>
+ 							</p:panel>
+ 						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Dados de Frequência da Atividade Física (dia(s)) de realização da atividade)" >
+						<h:panelGrid columns="2" style="border:none;margin-left: auto; margin-right: auto;" columnClasses="label, value" styleClass="grid">
+							<h:panelGrid columns="8" id="frequenciaDiaSemana">
+								<p:panel header="Segunda">
+									<h:panelGrid style=" border:none;margin-left: auto; margin-right: auto;">
+										<h:outputText value="#{grupoatividadefisicaMB.diaSemana.segunda == true? 'SIM':'-'}" style="color:blue;"/>
+									</h:panelGrid>
+								</p:panel>
+								<p:panel header="Terça">
+									<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+										<h:outputText value="#{grupoatividadefisicaMB.diaSemana.terca == true? 'SIM':'-'}" style="color:blue;"/>
+									</h:panelGrid>
+								</p:panel>
+								<p:panel header="Quarta">
+									<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+										<h:outputText value="#{grupoatividadefisicaMB.diaSemana.quarta == true? 'SIM':'-'}" style="color:blue;"/>
+									</h:panelGrid>
+								</p:panel>
+								<p:panel header="Quinta">
+									<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+										<h:outputText value="#{grupoatividadefisicaMB.diaSemana.quinta == true? 'SIM':'-'}" style="color:blue;"/>
+									</h:panelGrid>
+								</p:panel>
+								<p:panel header="Sexta">
+									<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+										<h:outputText value="#{grupoatividadefisicaMB.diaSemana.sexta == true? 'SIM':'-'}" style="color:blue;"/>
+									</h:panelGrid>
+								</p:panel>
+								<p:panel header="Sábado">
+									<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+										<h:outputText value="#{grupoatividadefisicaMB.diaSemana.sabado == true? 'SIM':'-'}" style="color:blue;"/>
+									</h:panelGrid>
+								</p:panel>
+								<p:panel header="Domingo">
+									<h:panelGrid style="border:none;margin-left: auto; margin-right: auto;">
+										<h:outputText value="#{grupoatividadefisicaMB.diaSemana.domingo == true? 'SIM':'-'}" style="color:blue;"/>
+									</h:panelGrid>
+								</p:panel>
+							</h:panelGrid>
+							<h:outputLink value="javascript:void(0)" onclick="dialogSelecaoDiaSemana.show()" title="Seleção de Frequência para o Grupo">     
+							    <p:graphicImage value="/images/semana-mini-icon.png" />  
+							</h:outputLink>
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="Dados de Horário" >
+						<h:panelGrid columns="4" columnClasses="label, value" styleClass="grid">
+							<p:panel header="Horário Início">
+								<h:selectOneMenu id="horaInicio" value="#{grupoatividadefisicaMB.horaInicio}" effect="drop" style="width:100px" height="200">
+									<f:selectItem itemLabel="06:00" itemValue="06:00"/>
+									<f:selectItem itemLabel="06:30" itemValue="06:30"/>
+									<f:selectItem itemLabel="07:00" itemValue="07:00"/>
+									<f:selectItem itemLabel="07:30" itemValue="07:30"/>
+									<f:selectItem itemLabel="08:00" itemValue="08:00"/>
+									<f:selectItem itemLabel="08:30" itemValue="08:30"/>
+									<f:selectItem itemLabel="09:00" itemValue="09:00"/>
+									<f:selectItem itemLabel="09:30" itemValue="09:30"/>
+									<f:selectItem itemLabel="10:00" itemValue="10:00"/>
+									<f:selectItem itemLabel="10:30" itemValue="10:30"/>
+									<f:selectItem itemLabel="11:00" itemValue="11:00"/>
+									<f:selectItem itemLabel="11:30" itemValue="11:30"/>
+									<f:selectItem itemLabel="12:00" itemValue="12:00"/>
+									<f:selectItem itemLabel="12:30" itemValue="12:30"/>
+									<f:selectItem itemLabel="13:00" itemValue="13:00"/>
+									<f:selectItem itemLabel="13:30" itemValue="13:30"/>
+									<f:selectItem itemLabel="14:00" itemValue="14:00"/>
+									<f:selectItem itemLabel="14:30" itemValue="14:30"/>
+									<f:selectItem itemLabel="15:00" itemValue="15:00"/>
+									<f:selectItem itemLabel="15:30" itemValue="15:30"/>
+									<f:selectItem itemLabel="16:00" itemValue="16:00"/>
+									<f:selectItem itemLabel="16:30" itemValue="16:30"/>
+									<f:selectItem itemLabel="17:00" itemValue="17:00"/>
+									<f:selectItem itemLabel="17:30" itemValue="17:30"/>
+									<f:selectItem itemLabel="18:00" itemValue="18:00"/>
+									<f:selectItem itemLabel="18:30" itemValue="18:30"/>
+									<f:selectItem itemLabel="19:00" itemValue="19:00"/>
+									<f:selectItem itemLabel="19:30" itemValue="19:30"/>
+									<f:selectItem itemLabel="20:00" itemValue="20:00"/>
+									<f:selectItem itemLabel="20:30" itemValue="20:30"/>
+									<f:selectItem itemLabel="21:00" itemValue="21:00"/>
+									<f:selectItem itemLabel="21:30" itemValue="21:30"/>
+									<f:selectItem itemLabel="22:00" itemValue="22:00"/>
+									<f:selectItem itemLabel="22:30" itemValue="22:30"/>
+									<f:selectItem itemLabel="23:00" itemValue="23:00"/>
+									<f:selectItem itemLabel="23:30" itemValue="23:30"/>
+								</h:selectOneMenu>
+							</p:panel>
+							<p:panel header="Horário de Término">
+								<h:selectOneMenu id="horaFim" value="#{grupoatividadefisicaMB.horaFim}" effect="drop" style="width:100px" height="200">
+									<f:selectItem itemLabel="06:00" itemValue="06:00"/>
+									<f:selectItem itemLabel="06:30" itemValue="06:30"/>
+									<f:selectItem itemLabel="07:00" itemValue="07:00"/>
+									<f:selectItem itemLabel="07:30" itemValue="07:30"/>
+									<f:selectItem itemLabel="08:00" itemValue="08:00"/>
+									<f:selectItem itemLabel="08:30" itemValue="08:30"/>
+									<f:selectItem itemLabel="09:00" itemValue="09:00"/>
+									<f:selectItem itemLabel="09:30" itemValue="09:30"/>
+									<f:selectItem itemLabel="10:00" itemValue="10:00"/>
+									<f:selectItem itemLabel="10:30" itemValue="10:30"/>
+									<f:selectItem itemLabel="11:00" itemValue="11:00"/>
+									<f:selectItem itemLabel="11:30" itemValue="11:30"/>
+									<f:selectItem itemLabel="12:00" itemValue="12:00"/>
+									<f:selectItem itemLabel="12:30" itemValue="12:30"/>
+									<f:selectItem itemLabel="13:00" itemValue="13:00"/>
+									<f:selectItem itemLabel="13:30" itemValue="13:30"/>
+									<f:selectItem itemLabel="14:00" itemValue="14:00"/>
+									<f:selectItem itemLabel="14:30" itemValue="14:30"/>
+									<f:selectItem itemLabel="15:00" itemValue="15:00"/>
+									<f:selectItem itemLabel="15:30" itemValue="15:30"/>
+									<f:selectItem itemLabel="16:00" itemValue="16:00"/>
+									<f:selectItem itemLabel="16:30" itemValue="16:30"/>
+									<f:selectItem itemLabel="17:00" itemValue="17:00"/>
+									<f:selectItem itemLabel="17:30" itemValue="17:30"/>
+									<f:selectItem itemLabel="18:00" itemValue="18:00"/>
+									<f:selectItem itemLabel="18:30" itemValue="18:30"/>
+									<f:selectItem itemLabel="19:00" itemValue="19:00"/>
+									<f:selectItem itemLabel="19:30" itemValue="19:30"/>
+									<f:selectItem itemLabel="20:00" itemValue="20:00"/>
+									<f:selectItem itemLabel="20:30" itemValue="20:30"/>
+									<f:selectItem itemLabel="21:00" itemValue="21:00"/>
+									<f:selectItem itemLabel="21:30" itemValue="21:30"/>
+									<f:selectItem itemLabel="22:00" itemValue="22:00"/>
+									<f:selectItem itemLabel="22:30" itemValue="22:30"/>
+									<f:selectItem itemLabel="23:00" itemValue="23:00"/>
+									<f:selectItem itemLabel="23:30" itemValue="23:30"/>
+								</h:selectOneMenu>
+							</p:panel>
+							<p:panel header="Data de Início do grupo">
+								<p:calendar value="#{grupoatividadefisicaMB.grupoAtividadeFisica.datainicio}" locale="pt_BR" pattern="dd/MM/yyyy"/>
+							</p:panel>
+							<p:panel header="Data do Cadastro">
+								<p:calendar value="#{grupoatividadefisicaMB.grupoAtividadeFisica.datacriacao}" locale="pt_BR" pattern="dd/MM/yyyy" disabled="true"/>
+							</p:panel>				
+						</h:panelGrid>							
+					</p:panel>
+					<p:panel header="Dados do local de realização da Atividade Física">
+						<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+							<h:outputText value="Endereço do local: " />
+								<p:inputText maxlength="300" value="#{grupoatividadefisicaMB.grupoAtividadeFisica.localatividade}" style="width:500px"/>
+						</h:panelGrid>
+					</p:panel>		
+					<p:panel header="Observações">
+						<h:panelGrid columns="2" columnClasses="label, value">
+							<h:outputText value="Observação...........: " />
+								<p:inputTextarea maxlength="300" value="#{grupoatividadefisicaMB.grupoAtividadeFisica.observacao}" style="width:300px; height: 60px;" effectDuration="400"/>	
+						</h:panelGrid>
+					</p:panel>
+			 		<h:panelGrid columns="2" columnClasses="label, value" styleClass="grid">
+						<h:outputText value="* Campos Obrigatórios!"/> <br/><br/>
+						<p:commandButton value="Cadastrar" action="#{grupoatividadefisicaMB.cadastrarGrupoAtividadeFisica}" update="growl" ajax="false" image="ui-icon ui-icon-pencil"/>			
+					</h:panelGrid>
+				</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="formDialogCadastraGrupoAtividadeFisica">
+    		<!-- DIALOG PARA SELEÇÃO DE UNIDADE DE SAÚDE -->
+    		<p:dialog header="Seleção de uma Unidade de Saúde" widgetVar="dialogSelecaoUnidadeSaude" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogSelecaoUnidadeSaude" closable="true" modal="true">
+				<p:dataTable id="dataTableSelecaoUnidadeSaude" var="unidadeSaude" 
+					             value="#{grupoatividadefisicaMB.listaUnidadeSaude}" paginator="true" rows="10">
+		       		<f:facet name="header">
+		           		Lista de Unidades de Saúde
+		       		</f:facet>
+					<p:column style="width:10px; text-align:center;">
+		       		    <f:facet name="header">
+		               	<h:outputText value="Código" />
+		           		</f:facet>
+		           		<h:outputText value="#{unidadeSaude.codigounidadesaude}" />
+		       		</p:column>
+		               <p:column sortBy="#{unidadeSaude.nome}" filterBy="#{unidadeSaude.nome}" style="width:100px;">
+		       		    <f:facet name="header">
+		               		<h:outputText value="Nome" />
+		           		</f:facet>
+		           		<h:outputText value="#{unidadeSaude.nome}" />
+		       		</p:column>
+			        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+			        	<p:commandButton title="Selecionar" value="Selecionar" update=":formCadastroGrupoAtividadeFisica:nomeUnidadeSaude" 
+			        	                 image="ui-icon ui-icon-search" oncomplete="dialogSelecaoUnidadeSaude.hide()">
+		       				<f:setPropertyActionListener target="#{grupoatividadefisicaMB.unidadeSaude}" value="#{unidadeSaude}" />
+			       		</p:commandButton>
+			        </p:column>	
+			    </p:dataTable>
+			</p:dialog>    		
+			<!-- DIALOG PARA SELEÇÃO DE EQUIPE DE SAÚDE DA FAMÍLIA -->
+    		<p:dialog header="Seleção de uma Equipe de Saúde da Família" widgetVar="dialogSelecaoEquipeSaudeFamilia" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogSelecaoEquipeSaudeFamilia" closable="true" modal="true">
+				<p:dataTable id="dataTableSelecaoEquipeSaudeFamilia" var="equipeSaudeFamilia" 
+					             value="#{grupoatividadefisicaMB.listaEquipeSaudeFamilia}" paginator="true" rows="10">
+		       		<f:facet name="header">
+		           		Lista de Equipes de Saúde da Família
+		       		</f:facet>
+					<p:column style="width:10px; text-align:center;">
+		       		    <f:facet name="header">
+		               	<h:outputText value="Código" />
+		           		</f:facet>
+		           		<h:outputText value="#{equipeSaudeFamilia.codigoequipesaudefamilia}" />
+		       		</p:column>
+		               <p:column sortBy="#{equipeSaudeFamilia.nome}" filterBy="#{equipeSaudeFamilia.nome}" style="width:100px;">
+		       		    <f:facet name="header">
+		               		<h:outputText value="Nome" />
+		           		</f:facet>
+		           		<h:outputText value="#{equipeSaudeFamilia.nome}" />
+		       		</p:column>
+			        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+			        	<p:commandButton title="Selecionar" value="Selecionar" update=":formCadastroGrupoAtividadeFisica:nomeEquipeSaudeFamilia" 
+			        	                 image="ui-icon ui-icon-search" oncomplete="dialogSelecaoEquipeSaudeFamilia.hide()">
+		       				<f:setPropertyActionListener target="#{grupoatividadefisicaMB.equipeSaudeFamilia}" value="#{equipeSaudeFamilia}" />
+			       		</p:commandButton>
+			        </p:column>	
+			    </p:dataTable>
+			</p:dialog>
+    		<!-- DIALOG PARA SELEÇÃO DE ATIVIDADE FÍSICA -->
+    		<p:dialog header="Seleção de uma Atividade Física" widgetVar="dialogSelecaoAtividadeFisica" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogSelecaoAtividadeFisica" closable="true" modal="true">
+				<p:dataTable id="dataTableSelecaoAtividadeFisica" var="atividadeFisica" 
+					             value="#{grupoatividadefisicaMB.listaAtividadeFisica}" paginator="true" rows="10">
+		       		<f:facet name="header">
+		           		Lista de Atividades Físicas
+		       		</f:facet>
+					<p:column style="width:10px; text-align:center;">
+		       		    <f:facet name="header">
+		               	<h:outputText value="Código" />
+		           		</f:facet>
+		           		<h:outputText value="#{atividadeFisica.codigoatividadefisica}" />
+		       		</p:column>
+		               <p:column sortBy="#{atividadeFisica.nome}" filterBy="#{atividadeFisica.nome}" style="width:100px;">
+		       		    <f:facet name="header">
+		               		<h:outputText value="Nome" />
+		           		</f:facet>
+		           		<h:outputText value="#{atividadeFisica.nome}" />
+		       		</p:column>
+			        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+			        	<p:commandButton title="Selecionar" value="Selecionar" update=":formCadastroGrupoAtividadeFisica:nomeAtividadeFisica" 
+			        	                 image="ui-icon ui-icon-search" oncomplete="dialogSelecaoAtividadeFisica.hide()">
+		       				<f:setPropertyActionListener target="#{grupoatividadefisicaMB.atividadeFisica}" value="#{atividadeFisica}" />
+			       		</p:commandButton>
+			        </p:column>	
+			    </p:dataTable>
+			</p:dialog>
+    		<!-- DIALOG PARA SELEÇÃO DE PERIODICIDADE -->
+    		<p:dialog header="Seleção de uma Periodicidade" widgetVar="dialogSelecaoPeriodicidade" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogSelecaoPeriodicidade" closable="true" modal="true">
+				<p:dataTable id="dataTableSelecaoPeriodicidade" var="periodicidade" 
+					             value="#{grupoatividadefisicaMB.listaPeriodicidade}" paginator="true" rows="10">
+		       		<f:facet name="header">
+		           		Lista de Periodicidades
+		       		</f:facet>
+					<p:column style="width:10px; text-align:center;">
+		       		    <f:facet name="header">
+		               	<h:outputText value="Código" />
+		           		</f:facet>
+		           		<h:outputText value="#{periodicidade.codigoperiodicidade}" />
+		       		</p:column>
+		               <p:column sortBy="#{periodicidade.nome}" filterBy="#{periodicidade.nome}" style="width:100px;">
+		       		    <f:facet name="header">
+		               		<h:outputText value="Nome" />
+		           		</f:facet>
+		           		<h:outputText value="#{periodicidade.nome}" />
+		       		</p:column>
+			        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+			        	<p:commandButton title="Selecionar" value="Selecionar" update=":formCadastroGrupoAtividadeFisica:nomePeriodicidade" 
+			        	                 image="ui-icon ui-icon-search" oncomplete="dialogSelecaoPeriodicidade.hide()">
+		       				<f:setPropertyActionListener target="#{grupoatividadefisicaMB.periodicidade}" value="#{periodicidade}" />
+			       		</p:commandButton>
+			        </p:column>	
+			    </p:dataTable>
+			</p:dialog>
+    		<!-- DIALOG PARA SELEÇÃO DE FREQUENCIA DAS ATIVIDADES -->
+    		<p:dialog header="Seleção de uma Frequência das Atividades para o Grupo" widgetVar="dialogSelecaoDiaSemana" resizable="false" width="960"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogSelecaoDiaSemana" closable="true" modal="true">
+				<p:dataTable id="dataTableSelecaoDiaSemana" var="diaSemana" 
+					             value="#{grupoatividadefisicaMB.listaDiaSemana}" paginator="true" rows="10">
+		       		<f:facet name="header">
+		           		Lista de Frequência para as atividades
+		       		</f:facet>
+					<p:column style="width:10px; text-align:center;">
+		       		    <f:facet name="header">
+		               	<h:outputText value="Código" />
+		           		</f:facet>
+		           		<h:outputText value="#{diaSemana.codigodiasemana}" />
+		       		</p:column>
+		               <p:column style="text-align:center" sortBy="#{diaSemana.segunda}" filterBy="#{diaSemana.segunda}">
+		               	<f:facet name="header">
+		               		<h:outputText value="Segunda" />
+		           		</f:facet>
+		           		<h:outputText value="#{diaSemana.segunda == true? 'SIM':'-'}" />
+		       		</p:column>
+		            <p:column style="text-align:center" sortBy="#{diaSemana.terca}" filterBy="#{diaSemana.terca}">
+		       		    <f:facet name="header">
+		               		<h:outputText value="Terça" />
+		           		</f:facet>
+		           		<h:outputText value="#{diaSemana.terca == true? 'SIM':'-'}" />
+		       		</p:column>
+					<p:column style="text-align:center" sortBy="#{diaSemana.quarta}" filterBy="#{diaSemana.quarta}">
+		       		    <f:facet name="header">
+		               		<h:outputText value="Quarta" />
+		           		</f:facet>
+		           		<h:outputText value="#{diaSemana.quarta == true? 'SIM':'-'}" />
+		       		</p:column>
+		            <p:column style="text-align:center" sortBy="#{diaSemana.quinta}" filterBy="#{diaSemana.quinta}">
+		       		    <f:facet name="header">
+		               		<h:outputText value="Quinta" />
+		           		</f:facet>
+		           		<h:outputText value="#{diaSemana.quinta == true? 'SIM':'-'}"/>
+		       		</p:column>
+		       		<p:column  style="text-align:center" sortBy="#{diaSemana.sexta}" filterBy="#{diaSemana.sexta}">
+		       		    <f:facet name="header">
+		               		<h:outputText value="Sexta" />
+		           		</f:facet>
+		           		<h:outputText value="#{diaSemana.sexta == true? 'SIM':'-'}"/>
+		       		</p:column>
+		       		<p:column style="text-align:center">
+		       		    <f:facet name="header">
+		               		<h:outputText value="Sábado" />
+		           		</f:facet>
+		           		<h:outputText value="#{diaSemana.sabado == true? 'SIM':'-'}"/>
+		       		</p:column>
+		            <p:column style="text-align:center">
+		       		    <f:facet name="header">
+		               		<h:outputText value="Domingo" />
+		           		</f:facet>
+		           		<h:outputText value="#{diaSemana.domingo == true? 'SIM':'-'}"/>
+		       		</p:column>
+			        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+			        	<p:commandButton title="Selecionar" value="Selecionar" update=":formCadastroGrupoAtividadeFisica:frequenciaDiaSemana" 
+			        	                 image="ui-icon ui-icon-search" oncomplete="dialogSelecaoDiaSemana.hide()">
+		       				<f:setPropertyActionListener target="#{grupoatividadefisicaMB.diaSemana}" value="#{diaSemana}" />
+		       				<f:setPropertyActionListener target="#{grupoatividadefisicaMB.ativo}" value="#{true}" />
+			       		</p:commandButton>
+			        </p:column>	
+			        <f:facet name="footer">
+			        	Para filtrar registros digite "T" ou "t" na caixa de Texto do dia desejado
+			        </f:facet>
+			    </p:dataTable>
+			</p:dialog>						    					    		
+    	</h:form>
+ 	</h:body>
+</html>

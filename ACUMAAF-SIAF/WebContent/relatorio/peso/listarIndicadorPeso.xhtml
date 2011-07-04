@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+<!--         <script type="text/javascript"> -->
+<!--         	var chartStyle = ( -->
+<!--         				padding:20, -->
+<!--         				legend:( -->
+<!--         						display:"right", -->
+<!--         						spacing:10 -->
+<!--         						) -->
+<!--         			); -->
+<!--         </script> -->
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Imagem" resizable="false" width="250">
+       			<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250" >
+       			<!-- TABELA COM OS INDICADORES CADASTRADOS -->
+<!--        			<h:form id="formTableListaIndicadorPeso"> -->
+<!--        				<p:panel header="Relatório do Indicador Peso" style="margin-left: auto;border:none;margin-right: auto;width:600px;"> -->
+<!--        					<h:panelGrid id="panelGridIndicadorPeso"> -->
+<!-- 					    	<h:panelGrid columns="3" columnClasses="label, value" styleClass="grid"> -->
+<!-- 								<h:outputText value="Selecione um Participante"/> -->
+<!-- 									 <p:inputText id="participante" name="participante" value="#{relatorioMB.usuario.nome}"								 	            -->
+<!-- 								                  style="width:200px;" onkeypress="return false;" disabled="true"/> -->
+								<h:outputLink value="javascript:void(0)" onclick="dialogPeso.show()" title="Seleção de Participante">     
+								    <p:graphicImage value="/images/participante-icon.png" onmouseover="this.width=58;this.height=58;" 
+	      							                onmouseout="this.width=48;this.height=48;"/>  
+							 	</h:outputLink>  	
+<!-- 							</h:panelGrid> -->
+<!-- 						</h:panelGrid> -->
+<!-- 					</p:panel> -->
+<!-- 				</h:form> -->
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+    	<h:form id="form" >
+    		<!-- DIALOG PARA SELEÇÃO DE PARTICIPANETE -->
+    		<p:dialog header="Seleção do Participante" widgetVar="dialogParticipante" resizable="false" width="500"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogParticipante" closable="true" modal="true">
+				<p:dataTable id="dataTableParticipante" var="participante" 
+					             value="#{msnMB.listaUsuarios}" paginator="true" rows="10">
+				       		<f:facet name="header">
+				           		Lista de Participantes cadastrados
+				       		</f:facet>
+							<p:column style="width:10px; text-align:center;">
+				       		    <f:facet name="header">
+				               	<h:outputText value="Código" />
+				           		</f:facet>
+				           		<h:outputText value="#{participante.codigousuario}" />
+				       		</p:column>
+				               <p:column sortBy="#{participante.nome}" filterBy="#{participante.nome}" style="width:100px;">
+				       		    <f:facet name="header">
+				               		<h:outputText value="Nome" />
+				           		</f:facet>
+				           		<h:outputText value="#{participante.nome}" />
+				       		</p:column>
+					        <p:column headerText="Selecionar" style="width:20px; text-align:center;" >
+					        	<p:commandButton title="Selecionar" value="Selecionar" update=":form:participante,:form:grafico,:form:gridView" 
+					        	                 image="ui-icon ui-icon-search" oncomplete="dialogParticipante.hide(),dialogPeso.show()">
+				       				<f:setPropertyActionListener target="#{relatorioMB.usuario}" value="#{participante}" />
+				       				<f:setPropertyActionListener target="#{relatorioMB.mostrar}" value="#{true}" />
+					       		</p:commandButton>
+					        </p:column>	
+				    </p:dataTable>
+			</p:dialog>
+			<!-- DIALOG PARA VISUALIZAÇÃO DO GRÁFICO DO PESO -->
+    		<p:dialog header="Visualização dos pesos" widgetVar="dialogPeso" resizable="false" width="800" height="550"  
+    	          showEffect="explode" hideEffect="explode" id="idDialogPeso" closable="true" modal="true">
+    	        <h:panelGrid id="gridView" style="margin-left: auto;margin-right: auto;">
+    	        	<p:panel rendered="#{!relatorioMB.mostrar}" header="Selecione um Participante" style="margin-left: auto;margin-right: auto;">
+	   					<h:panelGrid columnClasses="label, value" styleClass="grid" style="margin-left: auto;margin-right: auto;height: 70px;">
+							<h:outputLink value="javascript:void(0)" onclick="dialogParticipante.show()" title="Seleção de Destinatário">     
+							    <p:graphicImage value="/images/participante-icon.png" onmouseover="this.width=58;this.height=58;" 
+							    	            onmouseout="this.width=48;this.height=48;"/>  
+						 	</h:outputLink>  	
+						</h:panelGrid>
+					</p:panel>
+					<p:panel header="R E L A T Ó R I O&nbsp;&nbsp;&nbsp;&nbsp;D O&nbsp;&nbsp;&nbsp;&nbsp;I N D I C A D O R&nbsp;&nbsp;&nbsp;&nbsp;P E S O " 
+	    	                 id="grafico" style="margin-left: auto;margin-right: auto;text-align:center;width:770px" rendered="#{relatorioMB.mostrar}">
+	    	            <h:panelGrid columnClasses="label, value" styleClass="grid" style="margin-left: auto;margin-right: auto;height: 70px;">
+							<p:graphicImage value="/images/participante-icon.png"/>  
+						</h:panelGrid>
+						<h:panelGrid columns="2" style="margin-left: auto;margin-right: auto;">
+							<h:outputText value="Nome do Participante: "/>
+							<h:outputText value="#{relatorioMB.usuario.nome}" style="color:blue;"/>
+						</h:panelGrid>     
+	    	        	<p:lineChart model="#{relatorioMB.indicadorPeso}" titleX="Data da Sessão (dia/mês/ano)" 
+					                 titleY="Peso (kg)" width="200"/>
+	    	        </p:panel>
+    	        </h:panelGrid>                           
+			</p:dialog>
+    	</h:form>
+	</h:body>
+</html>
