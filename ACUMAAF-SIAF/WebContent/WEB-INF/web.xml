@@ -14,12 +14,21 @@
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
   <context-param>
-	<param-name>primefaces.THEME</param-name>
-	<param-value>bluesky</param-value>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>bluesky</param-value>
   </context-param>
   <context-param>
-	<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
-	<param-value>true</param-value>
+    <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+    <param-value>true</param-value>
   </context-param>
-  
+  <servlet>
+    <description>JAX-RS Tools Generated - Do not modify</description>
+    <servlet-name>JAX-RS Servlet</servlet-name>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JAX-RS Servlet</servlet-name>
+    <url-pattern>/jaxrs/*</url-pattern>
+  </servlet-mapping>
 </web-app>
