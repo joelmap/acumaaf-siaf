@@ -129,5 +129,13 @@ public class UsuarioDAO {
 		return listaUsuarios;
 	}
 	
+	//Recupera uma lista com todos os usuários que não estão sincronizados com o SMC
+	@SuppressWarnings("unchecked")
+	public List<Usuario> findListaUsuariosNaoSincronizado() {
+		List<Usuario> listaUsuarios = null;
+		Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.sincronizado = false");
+		listaUsuarios = (List<Usuario>)query.getResultList();
+		return listaUsuarios;
+	}
 
 }
