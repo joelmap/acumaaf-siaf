@@ -15,6 +15,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
+import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
+
 @Path("sincroniza")
 public class WsSincronizaTabelas {
     @SuppressWarnings("unused")
@@ -36,7 +40,8 @@ public class WsSincronizaTabelas {
     @Produces("application/json")
     public List<UsuarioJson> getJson() {
     	List<UsuarioJson> listaUsuarios = new ArrayList<UsuarioJson>();
-    	for (Usuario user : new UsuarioDAO().findUserAll()) {
+    	System.out.println("Tamanho da lista: " + new UsuarioDAO().findListaUsuariosNaoSincronizado().size());
+    	for (Usuario user : new UsuarioDAO().findListaUsuariosNaoSincronizado()) {
     		//Objeto Usuário mapeado para json
     		UsuarioJson uJason = new UsuarioJson();
     		uJason.setCodigousuario(user.getCodigousuario());
@@ -56,7 +61,28 @@ public class WsSincronizaTabelas {
      */
     @PUT
     @Consumes("application/json")
-    public void putJson(Usuario content) {
+    public String putJson(String string) {
+    	System.out.println("Entrou no método PUT do servidor! " + '\n' + "String = " + string);
+    	JSONObject json;
+		try{
+			json = new JSONObject(string);
+			JSONArray nameArray = json.names();
+			System.out.println("nameArray: " + nameArray);
+			JSONArray arrayVal = json.getJSONArray("usuarioJson");
+			System.out.println("arrayVal: " + arrayVal);
+			System.out.println("tamanho do arrayVal: " + arrayVal.length());
+			for (int j = 0; j < arrayVal.length(); j++) {
+				Usuario u = new Usuario();
+				u.setCodigousuario(arrayVal.getJSONObject(j).getInt("codigousuario"));
+				u = new UsuarioDAO().findUserByCode(u.getCodigousuario());
+				System.out.println("Código.: " + u.getCodigousuario() + " | Nome: " + u.getNome());
+				u.setSincronizado(true);
+				new UsuarioDAO().update(u);
+			}	
+		}catch(JSONException e) {
+			e.printStackTrace();
+		}
+    	return "Cadastros recebidos com sucesso!";
     }
 
 }
