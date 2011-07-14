@@ -81,5 +81,21 @@ public class SessaoDAO {
 		List<Sessao> listaSessoes = query.getResultList();
 		return listaSessoes;
 	}
+	
+	
+	//Recupera uma lista de todas sessões de atividade física que não estão sincronizadas com o SMC
+	@SuppressWarnings("unchecked")
+	public List<Sessao> findListaSessoesNaoSincronizadas() {
+		Query query = em.createQuery("SELECT s FROM Sessao s WHERE s.sincronizado = false");
+		List<Sessao> listaSessoes = query.getResultList();
+		return listaSessoes;
+	}
+	
+	// Recupera uma sessão de atividade física pelo código inteiro
+	public Sessao findSessaoByCode(Integer codigo) {
+		Query query = em.createQuery("SELECT s FROM Sessao s WHERE s.codigosessao =:codigo");
+		query.setParameter("codigo", codigo);
+		return (Sessao) query.getSingleResult();
+	}
 
 }

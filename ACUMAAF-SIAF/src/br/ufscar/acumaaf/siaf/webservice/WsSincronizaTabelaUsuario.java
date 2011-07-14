@@ -19,8 +19,8 @@ import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 
-@Path("sincroniza")
-public class WsSincronizaTabelas {
+@Path("sincronizaUsuario")
+public class WsSincronizaTabelaUsuario {
     @SuppressWarnings("unused")
     @Context
     private UriInfo context;
@@ -28,12 +28,12 @@ public class WsSincronizaTabelas {
     /**
      * Default constructor. 
      */
-    public WsSincronizaTabelas() {
+    public WsSincronizaTabelaUsuario() {
         // TODO Auto-generated constructor stub
     }
 
     /**
-     * Retrieves representation of an instance of WsSincronizaTabelas
+     * Retrieves representation of an instance of WsSincronizaTabelaUsuario
      * @return an instance of each Tables
      */
     @GET
@@ -55,7 +55,7 @@ public class WsSincronizaTabelas {
     }
 
     /**
-     * PUT method for updating or creating an instance of WsSincronizaTabelas
+     * PUT method for updating or creating an instance of WsSincronizaTabelaUsuario
      * @param content representation for the resource
      * @return an HTTP response with content of the updated or created resource.
      */
