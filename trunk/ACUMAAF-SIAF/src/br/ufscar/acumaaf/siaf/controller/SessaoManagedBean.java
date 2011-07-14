@@ -101,7 +101,7 @@ public class SessaoManagedBean {
 	public void editar(){
 		
 		//Muda o atributo "sincronizado" para false para que o SMC sincronize as informações de atualização
-		sessao.setSincronizado(false);
+		sessaoSelecionada.setSincronizado(false);
 		//Atualiza as informações no registro do banco de dados
 		sessaoDao.update(sessaoSelecionada);
 	}
