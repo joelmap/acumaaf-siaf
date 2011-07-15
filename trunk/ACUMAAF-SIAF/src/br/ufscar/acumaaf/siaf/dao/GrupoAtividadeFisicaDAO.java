@@ -85,4 +85,12 @@ public class GrupoAtividadeFisicaDAO {
 		List<Grupoatividadefisica> listaGrupoAtividadeFisica = query.getResultList();
 		return listaGrupoAtividadeFisica;
 	}
+	
+	//Recupera uma lista com todos os Grupo de Atividades Físicas não sincronizados
+	@SuppressWarnings("unchecked")
+	public List<Grupoatividadefisica> findGrupoAtividadeFisicaNaoSincronizado() {
+		Query query = em.createQuery("SELECT g FROM Grupoatividadefisica g WHERE g.sincronizado = false AND g.statusgrupoatividadefisica = true");
+		List<Grupoatividadefisica> listaGrupoAtividadeFisica = query.getResultList();
+		return listaGrupoAtividadeFisica;
+	}
 }

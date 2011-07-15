@@ -254,6 +254,9 @@ public class GrupoAtividadeFisicaManagedBean {
 		}  
 		grupoAtividadeFisicaSelecionado.setHorafim(new Time(hora.getTime()));
 		
+		//Seta o sincronizado para false para que as alterações sejam sincronizadas com o SMC
+		grupoAtividadeFisicaSelecionado.setSincronizado(false);
+		
 		//Atualiza determinado registro no banco de dados
 		grupoAtividadeFisicaDao.update(grupoAtividadeFisicaSelecionado);
 	}

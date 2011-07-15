@@ -86,7 +86,7 @@ public class SessaoDAO {
 	//Recupera uma lista de todas sessões de atividade física que não estão sincronizadas com o SMC
 	@SuppressWarnings("unchecked")
 	public List<Sessao> findListaSessoesNaoSincronizadas() {
-		Query query = em.createQuery("SELECT s FROM Sessao s WHERE s.sincronizado = false");
+		Query query = em.createQuery("SELECT s FROM Sessao s WHERE s.sincronizado = false ORDER BY s.data");
 		List<Sessao> listaSessoes = query.getResultList();
 		return listaSessoes;
 	}
