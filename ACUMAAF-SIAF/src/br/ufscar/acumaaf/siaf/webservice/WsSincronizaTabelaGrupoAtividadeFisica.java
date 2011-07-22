@@ -29,7 +29,6 @@ public class WsSincronizaTabelaGrupoAtividadeFisica {
      * Default constructor. 
      */
     public WsSincronizaTabelaGrupoAtividadeFisica() {
-        // TODO Auto-generated constructor stub
     }
 
     /**

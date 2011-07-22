@@ -30,7 +30,6 @@ public class WsSincronizaTabelaSessao {
      * Default constructor. 
      */
     public WsSincronizaTabelaSessao() {
-        // TODO Auto-generated constructor stub
     }
 
     /**

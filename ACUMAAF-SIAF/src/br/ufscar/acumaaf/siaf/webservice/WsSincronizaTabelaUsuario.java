@@ -29,7 +29,6 @@ public class WsSincronizaTabelaUsuario {
      * Default constructor. 
      */
     public WsSincronizaTabelaUsuario() {
-        // TODO Auto-generated constructor stub
     }
 
     /**
