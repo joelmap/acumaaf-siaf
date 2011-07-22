@@ -75,7 +75,7 @@ public class MatriculaUsuarioGrupoAtividadeFisicaDAO {
 		return (Matriculausuariogrupoatividadefisica)query.getSingleResult();
 	}
 
-	//Recupera uma lista todos os vínculos entre os usuários e as unidades de saúde cadastradas no banco de dados
+	//Recupera uma lista todos os vínculos entre os usuários e grupos de atividade física cadastrados no banco de dados
 	@SuppressWarnings("unchecked")
 	public List<Matriculausuariogrupoatividadefisica> findMatriculaUsuarioGrupoAtividadeFisicaAll() {
 		Query query = em.createQuery("SELECT m FROM Matriculausuariogrupoatividadefisica m");
@@ -83,4 +83,11 @@ public class MatriculaUsuarioGrupoAtividadeFisicaDAO {
 		return listaMatriculaUsuarioGrupoAtividadeFisica;
 	}
 
+	//Recupera uma lista todos os vínculos entre os usuários e grupos de atividade física não sincronizados com o SMC
+	@SuppressWarnings("unchecked")
+	public List<Matriculausuariogrupoatividadefisica> findListaMatriculaUsuarioGrupoAtividadeFisicaNaoSincronizado() {
+		Query query = em.createQuery("SELECT m FROM Matriculausuariogrupoatividadefisica m WHERE m.sincronizado = false");
+		List<Matriculausuariogrupoatividadefisica> listaMatriculaUsuarioGrupoAtividadeFisica = query.getResultList();
+		return listaMatriculaUsuarioGrupoAtividadeFisica;
+	}
 }
