@@ -76,6 +76,15 @@ public class PresencaDAO {
 		return (Presenca)query.getSingleResult();
 	}
 	
+	// Recupera um registro de Presença pelo código da sessao e pelo codigo do usuario
+	@SuppressWarnings("unchecked")
+	public List<Presenca> findPresencaByCodeUserAndCodeSessao(Presenca presenca) {
+		Query query = em.createQuery("SELECT p FROM Presenca p WHERE p.usuario.codigousuario =:codigo AND p.sessao.codigosessao =:sessao");
+		query.setParameter("codigo", presenca.getUsuario().getCodigousuario());
+		query.setParameter("sessao", presenca.getSessao().getCodigosessao());
+		return (List<Presenca>) query.getResultList();
+	}
+	
 	//Recupera uma lista de todas as Presenças cadastradas no banco de dados
 	@SuppressWarnings("unchecked")
 	public List<Presenca> findPresencaAll() {
