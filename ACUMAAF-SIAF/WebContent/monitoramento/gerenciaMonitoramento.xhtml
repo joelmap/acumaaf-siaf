@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>
+	        <ui:insert name="title">ACUMAAF - SIAF 2.0</ui:insert>
+        </title>
+    </h:head>
+	<h:body>
+    	<p:layout fullPage="true" onResizeComplete="true">
+		    <!-- LAYOUT DO TOPO DA PÁGINA -->
+			<p:layoutUnit position="top" resizable="false" height="150" style=" background-image: url('../images/bg.png')">
+				<ui:include src="/componentes/layout_menu_doc_top.xhtml"/>
+				<p:graphicImage url="/images/layout-top-atividade-fisica2.png" style="height:90px;"/>
+			</p:layoutUnit>
+       		<!-- LAYOUT DO LADO ESQUERDO DA PÁGINA -->
+       		<p:layoutUnit position="left" header="Calendário  e Programações" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_esquerdo.xhtml" />
+       		</p:layoutUnit>
+       		<!-- LAYOUT DO LADO DIREITO DA PÁGINA -->
+       		<p:layoutUnit position="right" header="Galeria de Imagens" resizable="false" width="250">
+        		<ui:include src="/componentes/layout_direito.xhtml" />
+        	</p:layoutUnit>
+        	<!-- LAYOUT DO CENTRO DA PÁGINA -->
+       		<p:layoutUnit position="center" id="centro" resizable="true"  scrollable="true" width="250">
+       			<h:form>
+       				<p:panel header="Monitoring Center" style="margin-left: auto; margin-right: auto; width:480px;">
+       					<p:panel header="Physical Activity Session">
+	       					<h:panelGrid columns="1" >
+					    	    <h:outputText value="Group of Physical Activity: Walking Group" />
+					            <h:outputText value="Date: 12/06/2011" />
+					            <h:outputText value="Time: 08:00AM - 09:00AM" />
+					            <h:outputText value="Local: USF Água Vermelha" />
+					            <h:outputText value="Caregiver: Renato Mesa" />
+					        </h:panelGrid>
+					    </p:panel>        
+       					<h:panelGrid columns="3" style="margin-left: auto; margin-right: auto;">
+					        <p:panel id="participante_1" header="Participant 1">
+					            <h:outputText value="Name: Cláudio" />
+					            <br /><h:outputText value="Blood Pressure: 122x83" />
+					            <br /><h:outputText value="Heart Rate: 83" />
+					        </p:panel>
+					        <p:panel id="participante_2" header="Participant 2">
+					            <h:outputText value="Name: João" />
+					            <br /><h:outputText value="Blood Pressure: 132x87" />
+					            <br /><h:outputText value="Heart Rate: 88" />
+					        </p:panel>
+					        <p:panel id="participante_3" header="Participant 3">
+					            <h:outputText value="Name: Fonseca" />
+					            <br /><h:outputText value="Blood Pressure: 120x80" />
+					            <br /><h:outputText value="Heart Rate: 80" />
+					        </p:panel>
+					    </h:panelGrid>
+					    <h:panelGrid columns="3" style="margin-left: auto; margin-right: auto;">
+					        <p:panel id="participante_4" header="Participant 4">
+					            <h:outputText value="Nome: Marcela" />
+					            <br /><h:outputText value="Blood Pressure: 118x78" />
+					            <br /><h:outputText value="Heart Rate: 85" />
+					        </p:panel>
+					        <p:panel id="participante_5" header="Participant 5">
+					            <h:outputText value="Nome: Gustavo" />
+					            <br /><h:outputText value="Blood Pressure: 120x80" />
+					            <br /><h:outputText value="Heart Rate: 80" />
+					        </p:panel>
+					        <p:panel id="participante_6" header="Participant 6">
+					            <h:outputText value="Nome: Antônio" />
+					            <br /><h:outputText value="Blood Pressure: 125x84" />
+					            <br /><h:outputText value="Heart Rate: 88" />
+					        </p:panel>
+					    </h:panelGrid>
+					    <h:panelGrid columns="3" style="margin-left: auto; margin-right: auto;">
+					    	<p:panel id="participante_7" header="Participant 7">
+					            <h:outputText value="Nome: Maria" />
+					            <br /><h:outputText value="Blood Pressure: 120x78" />
+					            <br /><h:outputText value="Heart Rate: 81" />
+					        </p:panel>
+					        <p:panel id="participante_8" header="Participant 8">
+					            <h:outputText value="Nome: Pedro" />
+					            <br /><h:outputText value="Blood Pressure: 120x80" />
+					            <br /><h:outputText value="Heart Rate: 80" />
+					        </p:panel>
+					        <p:panel id="participante_9" header="Participant 9">
+					            <h:outputText value="Nome: Nilda" />
+					            <br /><h:outputText value="Blood Pressure: 127x87" />
+					            <br /><h:outputText value="Heart Rate: 87" />
+					        </p:panel>
+					    </h:panelGrid>
+       				</p:panel>    
+				</h:form>
+ 		   	</p:layoutUnit>
+ 		   	<!-- LAYOUT DO RODAPÉ DA PÁGINA -->
+       		<p:layoutUnit position="bottom" resizable="false" height="60" style="background-image: url('../images/bg.png')">
+        		<ui:include src="/componentes/layout_rodape.xhtml" />
+       		</p:layoutUnit>
+    	</p:layout>
+	</h:body>
+</html>

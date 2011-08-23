@@ -33,7 +33,7 @@
 	       			<h:panelGrid columns="3" style="margin-left: auto; margin-right: auto;">
 	       				
 	       				<h:panelGrid>
-	      					<p:panel style="width:200px; height: 250px; border:none;margin-left: auto; margin-right: auto;text-algin:center" header="Relatório Indicador Peso" >
+	      					<p:panel style="width:200px; height: 200px; border:none;margin-left: auto; margin-right: auto;text-algin:center" header="Relatório Indicador Peso" >
 	      						<p:commandLink onclick="dialogPeso.show()">
 	      							<p:graphicImage alt="Relatório Indicador Peso" url="/images/peso-icon.png" 
 	      											title="Relatório Indicador Peso" onmouseover="this.width=180;this.height=180;" 
@@ -43,7 +43,7 @@
 	      					</p:panel>
 	      				</h:panelGrid>
 	      				<h:panelGrid>
-	      					<p:panel style="width:200px; height: 250px; border:none;margin-left: auto; margin-right: auto;text-algin:center" header="Relatório de Pressão Arterial" >
+	      					<p:panel style="width:200px; height: 200px; border:none;margin-left: auto; margin-right: auto;text-algin:center" header="Relatório de Pressão Arterial" >
 	      						<p:commandLink onclick="dialogPressaoArterial.show()">
 	      							<p:graphicImage alt="Relatório de Pressão Arterial" url="/images/pressao-arterial-icon.png" 
 	      											title="Relatório de Pressão Arterial" onmouseover="this.width=180;this.height=180;" 
@@ -53,7 +53,7 @@
 	      					</p:panel>
 	      				</h:panelGrid>
 	     				<h:panelGrid>
-	      					<p:panel style="width:200px; height: 250px;border:none;margin-left: auto; margin-right: auto;" header="Gerenciar Dado Crítico" >
+	      					<p:panel style="width:200px; height: 200px;border:none;margin-left: auto; margin-right: auto;" header="Gerenciar Dado Crítico" >
 	      						<p:commandLink action="#{dadocriticosessaoMB.chamaPaginaGerenciarDadoCriticoSessaoAtividadeFisica}">
 	      							<p:graphicImage alt="Gerenciar Dado Crítico" url="/images/dado-critico-icon.png" 
 	      							                title="Gerenciar Dado Crítico" onmouseover="this.width=180;this.height=180;" 
@@ -61,6 +61,18 @@
 	      							                style="margin-left: auto; margin-right: auto;"/>
 	      						</p:commandLink>
 	      					</p:panel>	
+	      				</h:panelGrid>
+	       			</h:panelGrid>
+	       			<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto;">
+	       				<h:panelGrid>
+	      					<p:panel style="width:200px; height: 200px; border:none;margin-left: auto; margin-right: auto;text-algin:center" header="Central de Monitoramento" >
+	      						<p:commandLink action="#{monitoramentoMB.chamaPaginaCentralMonitoramento}" style="margin-left: auto; margin-right: auto;">
+	      							<p:graphicImage alt="Central de Monitoramento" url="/images/monitoramento-icon.png" 
+	      											title="Central de Monitoramento" onmouseover="this.width=180;this.height=180;" 
+	      											onmouseout="this.width=140;this.height=140;" 
+	      											style="margin-left: auto; margin-right: auto;"/>
+	      							</p:commandLink>				
+	      					</p:panel>
 	      				</h:panelGrid>
 	       			</h:panelGrid>
        			</h:form>
