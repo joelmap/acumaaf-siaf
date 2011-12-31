@@ -40,7 +40,9 @@ public class RelatorioManagedBean implements Serializable{
 		indicadorPeso = new CartesianChartModel();
 		ChartSeries pesos = new ChartSeries();
 		ChartSeries pesoMax = new ChartSeries();
+//		ChartSeries pesoMax2 = new ChartSeries();
 		ChartSeries pesoMin = new ChartSeries();
+		
 		
 		pesos.setLabel("Peso do Participante(kg)");
 		pesoMax.setLabel("Peso de controle Máximo");
@@ -52,9 +54,47 @@ public class RelatorioManagedBean implements Serializable{
 			pesoMin.set(formatoData.format(dado.getSessao().getData()).toString(), 40);
 		}
 		
-		indicadorPeso.addSeries(pesos);
+//		pesoMax.set("30/05/2011", 77);
+//		pesoMax2.set("30/05/2011", 77);
+//		pesoMin.set("30/05/2011", 57);
+//		pesos.set("30/05/2011",76);
+//		pesoMax.set("01/06/2011", 77);
+//		pesoMax2.set("01/06/2011", 77);
+//		pesoMin.set("01/06/2011", 57);
+//		pesos.set("01/06/2011",75.2);
+//		pesoMax.set("03/06/2011", 77);
+//		pesoMax2.set("03/06/2011", 77);
+//		pesoMin.set("03/06/2011", 57);
+//		pesos.set("03/06/2011",74.1);
+//		pesoMax.set("06/06/2011", 77);
+//		pesoMax2.set("06/06/2011", 77);
+//		pesoMin.set("06/06/2011", 57);
+//		pesos.set("06/06/2011",73.5);
+//		pesoMax.set("08/06/2011", 77);
+//		pesoMax2.set("08/06/2011", 77);
+//		pesoMin.set("08/06/2011", 57);
+//		pesos.set("08/06/2011",72);
+//		pesoMax.set("10/06/2011", 77);
+//		pesoMax2.set("10/06/2011", 77);
+//		pesoMin.set("10/06/2011", 57);
+//		pesos.set("10/06/2011",71.5);
+//		pesoMax.set("13/06/2011", 77);
+//		pesoMax2.set("13/06/2011", 77);
+//		pesoMin.set("13/06/2011", 57);
+//		pesos.set("13/06/2011",71);
+//		pesoMax.set("15/06/2011", 77);
+//		pesoMax2.set("15/06/2011", 77);
+//		pesoMin.set("15/06/2011", 57);
+//		pesos.set("15/06/2011",70);
+
+		
+		
+		
 		indicadorPeso.addSeries(pesoMax);
+		indicadorPeso.addSeries(pesos);
 		indicadorPeso.addSeries(pesoMin);
+//		indicadorPeso.addSeries(pesoMax2);
+
 		
 		return indicadorPeso;
 	}
@@ -79,6 +119,34 @@ public class RelatorioManagedBean implements Serializable{
 			pressaoDiastolicaPadrao.set(formatoData.format(dado.getSessao().getData()).toString(),80);
 			pressaoDiastolicaPaciente.set(formatoData.format(dado.getSessao().getData()).toString(),Integer.valueOf(dado.getValor().substring(dado.getValor().indexOf("x") + 1)));
 		}
+		
+	
+
+//		pressaoSistolicaPadrao.set("09:00",120);
+//		pressaoSistolicaPaciente.set("09:00",123);
+//		pressaoDiastolicaPadrao.set("09:00",80);
+//		pressaoDiastolicaPaciente.set("09:00",81);
+//		pressaoSistolicaPadrao.set("09:10",120);
+//		pressaoSistolicaPaciente.set("09:10",125);
+//		pressaoDiastolicaPadrao.set("09:10",80);
+//		pressaoDiastolicaPaciente.set("09:10",86);
+//		pressaoSistolicaPadrao.set("09:20",120);
+//		pressaoSistolicaPaciente.set("09:20",126);
+//		pressaoDiastolicaPadrao.set("09:20",80);
+//		pressaoDiastolicaPaciente.set("09:20",86);
+//		pressaoSistolicaPadrao.set("09:30",120);
+//		pressaoSistolicaPaciente.set("09:30",123);
+//		pressaoDiastolicaPadrao.set("09:30",80);
+//		pressaoDiastolicaPaciente.set("09:30",81);
+//		pressaoSistolicaPadrao.set("09:40",120);
+//		pressaoSistolicaPaciente.set("09:40",122);
+//		pressaoDiastolicaPadrao.set("09:40",80);
+//		pressaoDiastolicaPaciente.set("09:40",87);
+//		pressaoSistolicaPadrao.set("09:50",120);
+//		pressaoSistolicaPaciente.set("09:50",121);
+//		pressaoDiastolicaPadrao.set("09:50",80);
+//		pressaoDiastolicaPaciente.set("09:50",83);
+
 		
 		indicadorPressaoArterial.addSeries(pressaoSistolicaPadrao);
 		indicadorPressaoArterial.addSeries(pressaoSistolicaPaciente);
